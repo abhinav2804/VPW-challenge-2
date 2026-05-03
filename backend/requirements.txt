@@ -16,3 +16,7 @@ google-cloud-vision==3.7.2
 google-cloud-speech==2.26.0
 google-api-python-client==2.133.0
 google-cloud-recaptcha-enterprise==1.15.0
+slowapi==0.1.9
+structlog==25.5.0
+ruff==0.4.8
+mypy==1.10.0
