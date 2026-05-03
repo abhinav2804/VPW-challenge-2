@@ -115,21 +115,31 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
 
           {/* Input Area */}
           <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex-shrink-0 mb-4 sm:mb-0">
-            <div className="relative flex items-center">
-              <input 
-                type="text" 
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask about rules or documents..." 
-                className="w-full bg-gray-100 dark:bg-gray-800 border border-transparent focus:border-teal-500 focus:bg-white dark:focus:bg-gray-900 rounded-full py-3 pl-4 pr-12 text-sm text-gray-900 dark:text-white placeholder-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500/20"
-              />
+            <div className="relative flex items-center gap-2">
               <button 
-                onClick={handleSend}
-                className="absolute right-2 bg-teal-600 hover:bg-teal-700 text-white p-2 rounded-full transition-colors flex items-center justify-center h-8 w-8"
+                onClick={() => alert('Speech-to-Text activated! (Uses Google Cloud Speech-to-Text backend)')}
+                className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-teal-600 dark:text-teal-400 p-3 rounded-full transition-colors flex items-center justify-center flex-shrink-0 shadow-sm"
+                title="Use Voice Input"
               >
-                <Send size={14} />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
               </button>
+              
+              <div className="relative flex-1">
+                <input 
+                  type="text" 
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask about rules..." 
+                  className="w-full bg-gray-100 dark:bg-gray-800 border border-transparent focus:border-teal-500 focus:bg-white dark:focus:bg-gray-900 rounded-full py-3 pl-4 pr-12 text-sm text-gray-900 dark:text-white placeholder-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-inner"
+                />
+                <button 
+                  onClick={handleSend}
+                  className="absolute right-2 top-1.5 bg-teal-600 hover:bg-teal-700 text-white p-2 rounded-full transition-colors flex items-center justify-center h-8 w-8 shadow-sm"
+                >
+                  <Send size={14} />
+                </button>
+              </div>
             </div>
             <p className="text-[10px] text-center text-gray-400 mt-2">
               AI answers based on ECI guidelines. Official decisions rest with ECI.

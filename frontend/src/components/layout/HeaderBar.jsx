@@ -20,14 +20,25 @@ const HeaderBar = () => {
           </Link>
           
           <div className="flex items-center gap-4">
+            {/* Hidden div for Google Translate widget initialization */}
+            <div id="google_translate_element" className="hidden"></div>
+            
             <button 
-              onClick={toggleLanguage}
+              onClick={() => {
+                toggleLanguage();
+                const targetLang = language === 'en' ? 'hi' : 'en';
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                  select.value = targetLang;
+                  select.dispatchEvent(new Event('change'));
+                }
+              }}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center gap-1 text-sm font-medium"
               aria-label="Toggle language"
             >
               <Languages size={20} className="text-gray-600 dark:text-gray-300" />
               <span className="hidden sm:inline-block text-gray-600 dark:text-gray-300">
-                {language === 'en' ? 'EN' : 'HI'}
+                {language === 'en' ? 'HI' : 'EN'}
               </span>
             </button>
             

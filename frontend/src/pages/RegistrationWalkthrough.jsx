@@ -83,11 +83,13 @@ const RegistrationWalkthrough = () => {
         if (data && data.steps && data.steps.length > 0) {
           setSteps(data.steps.map(s => ({
             ...s,
+            id: s.stepNumber || s.id,
             icon: iconMap[s.icon] || <FileCheck size={24} />
           })));
         } else {
           setSteps(DEFAULT_STEPS.map(s => ({
             ...s,
+            id: s.id,
             icon: iconMap[s.icon] || <FileCheck size={24} />
           })));
         }
@@ -95,6 +97,7 @@ const RegistrationWalkthrough = () => {
         console.error("Failed to fetch steps, using fallback:", err);
         setSteps(DEFAULT_STEPS.map(s => ({
           ...s,
+          id: s.id,
           icon: iconMap[s.icon] || <FileCheck size={24} />
         })));
       } finally {
@@ -435,7 +438,7 @@ const RegistrationWalkthrough = () => {
                         <iframe 
                           width="100%" 
                           height="100%" 
-                          src={currentStepData.videoUrl} 
+                          src={currentStepData.videoUrl.replace('watch?v=', 'embed/')} 
                           title="Walkthrough Guide" 
                           frameBorder="0" 
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
