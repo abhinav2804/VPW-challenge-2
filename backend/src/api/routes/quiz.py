@@ -1,7 +1,7 @@
 """Quiz Engine API router."""
 
 import logging
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -11,7 +11,6 @@ from src.schemas.quiz import (
     QuizQuestionsResponse,
     QuizGradeRequest,
     QuizGradeResponse,
-    QuizDetailedResult,
 )
 from src.utils.data_loader import load_json
 
@@ -22,15 +21,18 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/quiz", tags=["Quiz"])
 
 
-def _load_quiz_bank() -> list[dict]:
+def _load_quiz_bank() -> List[Dict[str, Any]]:
     """Load the full quiz question bank (with answers)."""
-    return load_json("quiz_questions.json")
+    data = load_json("quiz_questions.json")
+    if not isinstance(data, list):
+        return []
+    return data
 
 
 @router.get("/questions", response_model=QuizQuestionsResponse)
 async def get_quiz_questions(
     topic: Optional[str] = Query(None, description="Filter by topic: residence, documents, forms"),
-):
+) -> QuizQuestionsResponse:
     """Return quiz questions with answers stripped out.
 
     Optionally filter by ``topic``. Correct answers and explanations are
@@ -62,7 +64,7 @@ async def get_quiz_questions(
 
 
 @router.post("/grade", response_model=QuizGradeResponse)
-async def grade_quiz(payload: QuizGradeRequest):
+async def grade_quiz(payload: QuizGradeRequest) -> QuizGradeResponse:
     """Grade submitted quiz answers against the question bank.
 
     Returns a score, max score, and per-question detailed feedback
@@ -78,6 +80,6 @@ async def grade_quiz(payload: QuizGradeRequest):
         return grade_quiz_submission(payload)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Quiz data not found.")
-    except Exception as exc:
+    except Exception:
         logger.exception("Quiz grading failed.")
         raise HTTPException(status_code=500, detail="An error occurred during grading.")

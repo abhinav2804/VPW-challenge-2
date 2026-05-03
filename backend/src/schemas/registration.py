@@ -14,7 +14,7 @@ class RegistrationStep(BaseModel):
     common_errors: list[str] = Field(default_factory=list, alias="commonErrors")
     video_url: Optional[str] = Field(None, alias="videoUrl")
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}
 
 
 class RegistrationStepsResponse(BaseModel):

@@ -6,8 +6,7 @@ consumable by FastAPI route handlers.
 """
 
 import logging
-import os
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 from google import genai
 from google.genai import types
@@ -31,7 +30,9 @@ def _get_client() -> genai.Client:
     if _client is None:
         api_key = settings.gemini_api_key
         if not api_key:
-            raise RuntimeError("GEMINI_API_KEY / GEMINI_KEY is not configured. Check your .env file.")
+            raise RuntimeError(
+                "GEMINI_API_KEY / GEMINI_KEY is not configured. Check your .env file."
+            )
         _client = genai.Client(api_key=api_key)
     return _client
 
@@ -84,7 +85,7 @@ _BASE_SYSTEM_PROMPT = (
 # ---------------------------------------------------------------------------
 
 
-def get_uploaded_file_refs() -> list:
+def get_uploaded_file_refs() -> List[Any]:
     """Return references to all files previously uploaded to the Gemini File API.
 
     The backend expects the user to have uploaded documents via the
@@ -101,7 +102,7 @@ def get_uploaded_file_refs() -> list:
         return []
 
 
-async def ask_ai(question: str, phase: str, context: Optional[dict] = None) -> dict:
+async def ask_ai(question: str, phase: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Send a grounded question to Gemini and return ``{answer, sources}``."""
 
     client = _get_client()
@@ -111,20 +112,22 @@ async def ask_ai(question: str, phase: str, context: Optional[dict] = None) -> d
     context_str = ""
     if context:
         context_str = " ".join(f"{k}={v}" for k, v in context.items())
-    system_instruction = f"{_BASE_SYSTEM_PROMPT}\n\n{phase_prompt}\n\nUser context: {context_str}".strip()
+    system_instruction = (
+        f"{_BASE_SYSTEM_PROMPT}\n\n{phase_prompt}\n\nUser context: {context_str}".strip()
+    )
 
     # Gather all uploaded file references to ground the answer
     file_refs = get_uploaded_file_refs()
 
     # Build the contents list: file references first, then the question
-    contents: list = []
+    contents: List[Any] = []
     for fref in file_refs:
         contents.append(fref)
     contents.append(question)
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.0-flash",
             contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
@@ -139,7 +142,7 @@ async def ask_ai(question: str, phase: str, context: Optional[dict] = None) -> d
 
         return {"answer": answer_text, "sources": sources}
 
-    except Exception as exc:
+    except Exception:
         logger.exception("Gemini API call failed.")
         return {
             "answer": "I'm having trouble connecting to the AI service right now. Please try again shortly.",
@@ -147,7 +150,7 @@ async def ask_ai(question: str, phase: str, context: Optional[dict] = None) -> d
         }
 
 
-def _extract_sources(file_refs: list) -> list[dict]:
+def _extract_sources(file_refs: List[Any]) -> List[Dict[str, Any]]:
     """Build a deterministic sources list from the uploaded file references.
 
     Since the Gemini File API does not return per-chunk citations in the
@@ -155,12 +158,27 @@ def _extract_sources(file_refs: list) -> list[dict]:
     as potential sources so the frontend can display them.
     """
     source_mapping = {
-        "Form_6_English": {"title": "Form 6 – ECI (National)", "url": "https://voters.eci.gov.in/formspdf/Form_6_English.pdf"},
-        "Form-6_en": {"title": "Guidelines for Form 6 – ECI", "url": "https://voters.eci.gov.in/guidelines/Form-6_en.pdf"},
-        "Delhi_FORM6": {"title": "Delhi Form 6 – CEO Delhi", "url": "https://www.ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/FORM6.pdf"},
-        "Delhi_form6_Guide": {"title": "Delhi Form 6 Guide – CEO Delhi", "url": "https://ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/form%206_Guide.pdf"},
+        "Form_6_English": {
+            "title": "Form 6 – ECI (National)",
+            "url": "https://voters.eci.gov.in/formspdf/Form_6_English.pdf",
+        },
+        "Form-6_en": {
+            "title": "Guidelines for Form 6 – ECI",
+            "url": "https://voters.eci.gov.in/guidelines/Form-6_en.pdf",
+        },
+        "Delhi_FORM6": {
+            "title": "Delhi Form 6 – CEO Delhi",
+            "url": "https://www.ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/FORM6.pdf",
+        },
+        "Delhi_form6_Guide": {
+            "title": "Delhi Form 6 Guide – CEO Delhi",
+            "url": "https://ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/form%206_Guide.pdf",
+        },
         "NVSP": {"title": "NVSP Portal – ECI", "url": "https://www.nvsp.in/"},
-        "Voter_Helpline": {"title": "Voter Helpline App – ECI", "url": "https://voterportal.eci.gov.in/"},
+        "Voter_Helpline": {
+            "title": "Voter Helpline App – ECI",
+            "url": "https://voterportal.eci.gov.in/",
+        },
     }
 
     sources = []

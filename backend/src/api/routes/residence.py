@@ -23,7 +23,7 @@ router = APIRouter(prefix="/api/residence", tags=["Residence & Maps"])
 async def get_residence_examples(
     state: Optional[str] = Query(None),
     city: Optional[str] = Query(None),
-):
+) -> ResidenceExamplesResponse:
     """Return curated residence-scenario examples from Form 6 guidelines."""
     try:
         raw = load_json("residence_examples.json")
@@ -40,7 +40,7 @@ async def get_residence_examples(
 async def get_delhi_centres(
     ac: Optional[str] = Query(None, description="Assembly Constituency number or name"),
     q: Optional[str] = Query(None, description="Locality / PIN code to geocode"),
-):
+) -> DelhiCentresResponse:
     """Look up Delhi voter centres by Assembly Constituency or locality search.
 
     - If ``ac`` is provided, centres are filtered by matching AC number/name.
@@ -59,15 +59,15 @@ async def get_delhi_centres(
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Delhi centres dataset not found.")
 
+    if not isinstance(raw_centres, list):
+        raise HTTPException(status_code=500, detail="Invalid data format for Delhi centres.")
+
     query_normalized = ""
 
     # --- Filter by AC ---
     if ac:
         query_normalized = ac
-        matched = [
-            c for c in raw_centres
-            if c["acNo"] == ac or c["acName"].lower() == ac.lower()
-        ]
+        matched = [c for c in raw_centres if c["acNo"] == ac or c["acName"].lower() == ac.lower()]
         if not matched:
             raise HTTPException(status_code=404, detail=f"No centres found for AC '{ac}'.")
         centres = [VoterCentre(**c) for c in matched]

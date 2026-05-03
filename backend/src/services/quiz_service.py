@@ -3,10 +3,11 @@
 from src.schemas.quiz import QuizGradeRequest, QuizGradeResponse, QuizDetailedResult
 from src.utils.data_loader import load_json
 
+
 def grade_quiz_submission(payload: QuizGradeRequest) -> QuizGradeResponse:
     """Grade a quiz submission against the official question bank."""
     bank = load_json("quiz_questions.json")
-    
+
     # Index questions by ID for O(1) lookup
     bank_index = {q["id"]: q for q in bank}
 

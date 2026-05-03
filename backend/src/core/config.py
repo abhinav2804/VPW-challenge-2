@@ -60,5 +60,6 @@ def get_settings() -> Settings:
     root_env = os.path.join(os.path.dirname(__file__), "..", "..", "..", ".env")
     if os.path.isfile(root_env):
         from dotenv import load_dotenv
+
         load_dotenv(root_env, override=False)
     return Settings()

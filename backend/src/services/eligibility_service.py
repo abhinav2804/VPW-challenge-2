@@ -27,7 +27,9 @@ def evaluate_eligibility(req: EligibilityCheckRequest) -> EligibilityCheckRespon
     # Rule 1: Age >= 18
     age_ok = req.age_years >= 18
     if age_ok:
-        reasons.append(EligibilityReason(text=f"You are {req.age_years} years old (≥ 18).", severity="info"))
+        reasons.append(
+            EligibilityReason(text=f"You are {req.age_years} years old (≥ 18).", severity="info")
+        )
     else:
         reasons.append(
             EligibilityReason(
@@ -57,9 +59,9 @@ def evaluate_eligibility(req: EligibilityCheckRequest) -> EligibilityCheckRespon
             )
         )
 
-    # Overall determination
+    from typing import Literal
     eligible = age_ok and citizen_ok and resident_ok
-    phase = "new_form6" if eligible else "learn_only"
+    phase: Literal["new_form6", "learn_only"] = "new_form6" if eligible else "learn_only"
 
     # Build a human-readable summary
     if eligible:

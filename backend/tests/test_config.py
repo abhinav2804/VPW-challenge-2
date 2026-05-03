@@ -1,7 +1,5 @@
 """Unit tests for the core configuration module."""
 
-import os
-import pytest
 from src.core.config import Settings, get_settings
 
 

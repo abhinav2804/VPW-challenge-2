@@ -7,7 +7,6 @@ import logging
 from typing import Optional
 
 from google.cloud import recaptchaenterprise_v1
-from google.cloud.recaptchaenterprise_v1 import Assessment
 from google.auth.exceptions import DefaultCredentialsError
 
 from src.core.config import get_settings
@@ -25,7 +24,9 @@ def _get_recaptcha_client() -> Optional[recaptchaenterprise_v1.RecaptchaEnterpri
         try:
             _recaptcha_client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
         except DefaultCredentialsError:
-            logger.warning("Google Cloud credentials not found. reCAPTCHA operations will be mocked.")
+            logger.warning(
+                "Google Cloud credentials not found. reCAPTCHA operations will be mocked."
+            )
             return None
         except Exception as e:
             logger.error("Failed to initialise reCAPTCHA client: %s", e)
@@ -44,7 +45,7 @@ async def verify_token(token: str, action: str = "submit_form") -> bool:
         True if the score is acceptable, False otherwise.
     """
     client = _get_recaptcha_client()
-    
+
     if not settings.RECAPTCHA_SITE_KEY or not client:
         # Fallback for local development
         logger.info(f"[MOCK] Verified reCAPTCHA token for action '{action}'.")
@@ -52,7 +53,7 @@ async def verify_token(token: str, action: str = "submit_form") -> bool:
 
     try:
         project_name = f"projects/{settings.GCP_PROJECT_ID}"
-        
+
         request = recaptchaenterprise_v1.CreateAssessmentRequest()
         request.assessment = recaptchaenterprise_v1.Assessment()
         request.assessment.event = recaptchaenterprise_v1.Event()
@@ -64,24 +65,28 @@ async def verify_token(token: str, action: str = "submit_form") -> bool:
 
         # Check if the token is valid.
         if not response.token_properties.valid:
-            logger.warning(f"The CreateAssessment call failed because the token was: "
-                           f"{response.token_properties.invalid_reason}")
+            logger.warning(
+                f"The CreateAssessment call failed because the token was: "
+                f"{response.token_properties.invalid_reason}"
+            )
             return False
 
         # Check if the expected action was executed.
         if response.token_properties.action != action:
-            logger.warning("The action attribute in your reCAPTCHA tag does not "
-                           "match the action you are expecting to score")
+            logger.warning(
+                "The action attribute in your reCAPTCHA tag does not "
+                "match the action you are expecting to score"
+            )
             return False
 
         # Get the risk score
         score = response.risk_analysis.score
         logger.info(f"reCAPTCHA score: {score}")
-        
+
         # Consider a score > 0.5 as human
         return score >= 0.5
 
-    except Exception as e:
+    except Exception:
         logger.exception("Failed to verify reCAPTCHA token.")
         # Fail open to not block legitimate users if the API fails
         return True

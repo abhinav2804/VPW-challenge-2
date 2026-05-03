@@ -8,7 +8,7 @@ import logging
 import base64
 from typing import Optional
 
-from google.cloud import storage
+from google.cloud import storage as gcs_storage  # type: ignore[attr-defined]
 from google.auth.exceptions import DefaultCredentialsError
 
 from src.core.config import get_settings
@@ -17,15 +17,15 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
-_storage_client: Optional[storage.Client] = None
+_storage_client: Optional[gcs_storage.Client] = None
 
 
-def _get_storage_client() -> Optional[storage.Client]:
+def _get_storage_client() -> Optional[gcs_storage.Client]:
     """Lazily initialise the GCS client, handling missing credentials gracefully."""
     global _storage_client
     if _storage_client is None:
         try:
-            _storage_client = storage.Client(project=settings.GCP_PROJECT_ID)
+            _storage_client = gcs_storage.Client(project=settings.GCP_PROJECT_ID)
         except DefaultCredentialsError:
             logger.warning("Google Cloud credentials not found. GCS operations will be mocked.")
             return None
@@ -35,7 +35,9 @@ def _get_storage_client() -> Optional[storage.Client]:
     return _storage_client
 
 
-async def upload_document(file_name: str, base64_content: str, content_type: str = "application/pdf") -> str:
+async def upload_document(
+    file_name: str, base64_content: str, content_type: str = "application/pdf"
+) -> str:
     """Upload a base64 encoded document to Google Cloud Storage.
 
     Args:
@@ -47,7 +49,7 @@ async def upload_document(file_name: str, base64_content: str, content_type: str
         The public URL of the uploaded file, or a mock URL if credentials are not configured.
     """
     client = _get_storage_client()
-    
+
     if not client:
         # Fallback for local development without credentials
         logger.info(f"[MOCK] Uploaded {file_name} to GCS bucket {settings.GCS_BUCKET_NAME}")
@@ -56,15 +58,15 @@ async def upload_document(file_name: str, base64_content: str, content_type: str
     try:
         bucket = client.bucket(settings.GCS_BUCKET_NAME)
         blob = bucket.blob(file_name)
-        
+
         # Decode base64 content
         file_bytes = base64.b64decode(base64_content)
-        
+
         blob.upload_from_string(file_bytes, content_type=content_type)
         logger.info("Successfully uploaded %s to %s", file_name, settings.GCS_BUCKET_NAME)
-        
+
         # Return the public URL
         return f"https://storage.googleapis.com/{settings.GCS_BUCKET_NAME}/{file_name}"
-    except Exception as e:
+    except Exception:
         logger.exception("Failed to upload document to GCS. Falling back to mock.")
         return f"https://storage.googleapis.com/mock-{settings.GCS_BUCKET_NAME}/{file_name}"

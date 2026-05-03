@@ -5,8 +5,7 @@ allowing voters to listen to instructions instead of reading.
 """
 
 import logging
-import base64
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from google import genai
 from google.genai import types
@@ -31,7 +30,7 @@ def _get_client() -> genai.Client:
     return _client
 
 
-async def text_to_speech(text: str, language: str = "en") -> dict:
+async def text_to_speech(text: str, language: str = "en") -> Dict[str, Any]:
     """Convert text to a spoken summary using Gemini.
 
     Since direct TTS may not be available in all Gemini tiers, this
@@ -51,7 +50,7 @@ async def text_to_speech(text: str, language: str = "en") -> dict:
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.0-flash",
             contents=text,
             config=types.GenerateContentConfig(
                 system_instruction=(

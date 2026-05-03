@@ -42,7 +42,7 @@ async def transcribe_audio(base64_audio: str, language_code: str = "en-IN") -> s
         The transcribed text.
     """
     client = _get_speech_client()
-    
+
     if not client:
         # Fallback for local development
         logger.info("[MOCK] Transcribed audio using Speech API.")
@@ -50,24 +50,26 @@ async def transcribe_audio(base64_audio: str, language_code: str = "en-IN") -> s
 
     try:
         content = base64.b64decode(base64_audio)
-        
+
         audio = speech.RecognitionAudio(content=content)
         # WebM contains header information, allowing auto-detection of sample rate and encoding
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
             language_code=language_code,
-            alternative_language_codes=["en-IN", "hi-IN"] if language_code == "en-IN" else ["hi-IN", "en-IN"]
+            alternative_language_codes=(
+                ["en-IN", "hi-IN"] if language_code == "en-IN" else ["hi-IN", "en-IN"]
+            ),
         )
-        
+
         response = client.recognize(config=config, audio=audio)
-        
+
         # Concatenate all alternative transcripts
         transcripts = []
         for result in response.results:
             transcripts.append(result.alternatives[0].transcript)
-            
+
         return " ".join(transcripts)
-        
+
     except Exception as e:
         logger.error(f"Failed to transcribe audio. Error: {str(e)}")
         logger.exception("Falling back to mock.")

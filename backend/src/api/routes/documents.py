@@ -16,8 +16,10 @@ router = APIRouter(prefix="/api/documents", tags=["Documents"])
 @router.get("/checklist", response_model=DocumentChecklistResponse)
 async def get_document_checklist(
     state: Optional[str] = Query(None, description="State for filtering (future use)"),
-    age_band: Optional[str] = Query(None, alias="ageBand", description="Age band for filtering (future use)"),
-):
+    age_band: Optional[str] = Query(
+        None, alias="ageBand", description="Age band for filtering (future use)"
+    ),
+) -> DocumentChecklistResponse:
     """Return the structured document checklist derived from Form 6 requirements.
 
     Each section contains items with labels, examples, and mandatory flags.

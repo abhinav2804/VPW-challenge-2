@@ -44,7 +44,7 @@ async def translate_to_hindi(text: str) -> str:
     client = _get_client()
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.0-flash",
             contents=text,
             config=types.GenerateContentConfig(
                 system_instruction=(
@@ -56,7 +56,8 @@ async def translate_to_hindi(text: str) -> str:
                 temperature=0.1,
             ),
         )
-        return response.text.strip()
+        translated = response.text or ""
+        return translated.strip()
     except Exception:
         logger.exception("Translation failed, returning original text.")
         return text
@@ -74,7 +75,7 @@ async def translate_to_english(text: str) -> str:
     client = _get_client()
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.0-flash",
             contents=text,
             config=types.GenerateContentConfig(
                 system_instruction=(
@@ -85,7 +86,8 @@ async def translate_to_english(text: str) -> str:
                 temperature=0.1,
             ),
         )
-        return response.text.strip()
+        translated = response.text or ""
+        return translated.strip()
     except Exception:
         logger.exception("Translation failed, returning original text.")
         return text

@@ -12,7 +12,7 @@ class StatusStage(BaseModel):
     estimated_time_range: str = Field(..., alias="estimatedTimeRange")
     where_to_check: str = Field(..., alias="whereToCheck")
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}
 
 
 class StatusStagesResponse(BaseModel):

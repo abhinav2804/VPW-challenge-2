@@ -1,7 +1,8 @@
 """AI Answer API router."""
 
 import logging
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from src.core.limiter import limiter
 
 from src.schemas.ai import AIAnswerRequest, AIAnswerResponse
 from src.services.gemini_service import ask_ai
@@ -12,7 +13,8 @@ router = APIRouter(prefix="/api/ai", tags=["AI"])
 
 
 @router.post("/answer", response_model=AIAnswerResponse)
-async def get_ai_answer(payload: AIAnswerRequest):
+@limiter.limit("10/minute")
+async def get_ai_answer(request: Request, payload: AIAnswerRequest) -> AIAnswerResponse:
     """Return a grounded AI answer using Gemini + uploaded ECI documents.
 
     The response includes the answer text and a list of source citations

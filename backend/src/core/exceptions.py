@@ -4,7 +4,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def global_exception_handler(request: Request, exc: Exception):
+
+async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     logger.error(f"Unhandled Exception: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,

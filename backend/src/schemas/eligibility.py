@@ -7,10 +7,18 @@ from typing import Optional, Literal
 class EligibilityCheckRequest(BaseModel):
     """Request body for POST /api/eligibility/check."""
 
-    age_years: int = Field(..., alias="ageYears", ge=0, le=150, description="Age of the user in years.")
+    age_years: int = Field(
+        ..., alias="ageYears", ge=0, le=150, description="Age of the user in years."
+    )
     citizen: bool = Field(..., description="Whether the user is an Indian citizen.")
-    resident_in_india: bool = Field(..., alias="residentInIndia", description="Whether the user currently resides in India.")
-    currently_registered: Optional[bool] = Field(None, alias="currentlyRegistered", description="Whether the user is already registered as a voter.")
+    resident_in_india: bool = Field(
+        ..., alias="residentInIndia", description="Whether the user currently resides in India."
+    )
+    currently_registered: Optional[bool] = Field(
+        None,
+        alias="currentlyRegistered",
+        description="Whether the user is already registered as a voter.",
+    )
     state: Optional[str] = Field(None, description="State of residence.")
     city: Optional[str] = Field(None, description="City of residence.")
 

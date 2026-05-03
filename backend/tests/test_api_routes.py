@@ -19,6 +19,7 @@ def client():
 # Health
 # =====================================================================
 
+
 class TestHealth:
     """Health-check endpoint tests."""
 
@@ -36,32 +37,48 @@ class TestHealth:
 # Eligibility
 # =====================================================================
 
+
 class TestEligibilityAPI:
     """Tests for POST /api/eligibility/check."""
 
     def test_eligible_voter(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 19, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 19,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert body["eligible"] is True
         assert body["phase"] == "new_form6"
 
     def test_underage_voter(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 16, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 16,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 200
         assert resp.json()["eligible"] is False
 
     def test_non_citizen_voter(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 25, "citizen": False,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 25,
+                "citizen": False,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 200
         assert resp.json()["eligible"] is False
 
@@ -70,57 +87,92 @@ class TestEligibilityAPI:
         assert resp.status_code == 422  # Validation error
 
     def test_age_boundary_18(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 18, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 18,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 200
         assert resp.json()["eligible"] is True
 
     def test_age_boundary_17(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 17, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 17,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 200
         assert resp.json()["eligible"] is False
 
     def test_negative_age_rejected(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": -1, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": -1,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 422
 
     def test_excessive_age_rejected(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 200, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 200,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         assert resp.status_code == 422
 
     def test_response_contains_links(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 19, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 19,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         body = resp.json()
         assert len(body["links"]) > 0
         assert all("url" in link for link in body["links"])
 
     def test_response_contains_reasons(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 19, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": False,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 19,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": False,
+            },
+        )
         body = resp.json()
         assert len(body["reasons"]) >= 3
 
     def test_already_registered_still_eligible(self, client):
-        resp = client.post("/api/eligibility/check", json={
-            "ageYears": 22, "citizen": True,
-            "residentInIndia": True, "currentlyRegistered": True,
-        })
+        resp = client.post(
+            "/api/eligibility/check",
+            json={
+                "ageYears": 22,
+                "citizen": True,
+                "residentInIndia": True,
+                "currentlyRegistered": True,
+            },
+        )
         body = resp.json()
         assert body["eligible"] is True
         assert "transfer" in body["summary"].lower() or "Form 6" in body["summary"]
@@ -129,6 +181,7 @@ class TestEligibilityAPI:
 # =====================================================================
 # Documents Checklist
 # =====================================================================
+
 
 class TestDocumentsAPI:
     """Tests for GET /api/documents/checklist."""
@@ -153,6 +206,7 @@ class TestDocumentsAPI:
 # =====================================================================
 # Registration Steps
 # =====================================================================
+
 
 class TestRegistrationAPI:
     """Tests for GET /api/registration/steps."""
@@ -179,6 +233,7 @@ class TestRegistrationAPI:
 # Status Stages
 # =====================================================================
 
+
 class TestStatusAPI:
     """Tests for GET /api/status/stages."""
 
@@ -195,6 +250,7 @@ class TestStatusAPI:
 # =====================================================================
 # Quiz
 # =====================================================================
+
 
 class TestQuizAPI:
     """Tests for GET /api/quiz/questions and POST /api/quiz/grade."""
@@ -214,36 +270,48 @@ class TestQuizAPI:
             assert "correctAnswer" not in q
 
     def test_grade_correct_answers(self, client):
-        resp = client.post("/api/quiz/grade", json={
-            "questionIds": ["q1", "q3", "q5"],
-            "answers": ["b", "c", "a"],
-        })
+        resp = client.post(
+            "/api/quiz/grade",
+            json={
+                "questionIds": ["q1", "q3", "q5"],
+                "answers": ["b", "c", "a"],
+            },
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert body["score"] == 3
         assert body["maxScore"] == 3
 
     def test_grade_wrong_answers(self, client):
-        resp = client.post("/api/quiz/grade", json={
-            "questionIds": ["q1"],
-            "answers": ["a"],  # Wrong answer
-        })
+        resp = client.post(
+            "/api/quiz/grade",
+            json={
+                "questionIds": ["q1"],
+                "answers": ["a"],  # Wrong answer
+            },
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert body["score"] == 0
 
     def test_grade_empty_payload(self, client):
-        resp = client.post("/api/quiz/grade", json={
-            "questionIds": [],
-            "answers": [],
-        })
+        resp = client.post(
+            "/api/quiz/grade",
+            json={
+                "questionIds": [],
+                "answers": [],
+            },
+        )
         assert resp.status_code == 422
 
     def test_grade_mismatched_lengths(self, client):
-        resp = client.post("/api/quiz/grade", json={
-            "questionIds": ["q1", "q2"],
-            "answers": ["b"],
-        })
+        resp = client.post(
+            "/api/quiz/grade",
+            json={
+                "questionIds": ["q1", "q2"],
+                "answers": ["b"],
+            },
+        )
         # Should either 400, 422 or handle gracefully
         assert resp.status_code in (200, 400, 422)
 
@@ -251,6 +319,7 @@ class TestQuizAPI:
 # =====================================================================
 # Residence
 # =====================================================================
+
 
 class TestResidenceAPI:
     """Tests for /api/residence/* endpoints."""
@@ -272,6 +341,7 @@ class TestResidenceAPI:
 # Sources
 # =====================================================================
 
+
 class TestSourcesAPI:
     """Tests for GET /api/sources."""
 
@@ -290,69 +360,76 @@ class TestSourcesAPI:
 # Google Services
 # =====================================================================
 
+
 class TestGoogleServicesAPI:
     """Tests for POST /api/google/* endpoints.
-    
+
     Note: These are mocked when no credentials exist, so they should
     still return 200 OK.
     """
 
     def test_translate_text(self, client):
-        resp = client.post("/api/google/translate", json={
-            "text": "Hello, how are you?",
-            "targetLanguage": "hi"
-        })
+        resp = client.post(
+            "/api/google/translate", json={"text": "Hello, how are you?", "targetLanguage": "hi"}
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert "translated" in body
         assert body["targetLanguage"] == "hi"
 
     def test_translate_unsupported_language(self, client):
-        resp = client.post("/api/google/translate", json={
-            "text": "Hello, how are you?",
-            "targetLanguage": "fr"
-        })
+        resp = client.post(
+            "/api/google/translate", json={"text": "Hello, how are you?", "targetLanguage": "fr"}
+        )
         assert resp.status_code == 400
 
     def test_text_to_speech(self, client):
-        resp = client.post("/api/google/tts", json={
-            "text": "Hello, how are you?",
-            "language": "en"
-        })
+        resp = client.post(
+            "/api/google/tts", json={"text": "Hello, how are you?", "language": "en"}
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert "spokenText" in body
         assert body["language"] == "en"
 
     def test_vision_validate_photo(self, client):
-        resp = client.post("/api/google/vision/validate-photo", json={
-            "base64Image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-        })
+        resp = client.post(
+            "/api/google/vision/validate-photo",
+            json={
+                "base64Image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+            },
+        )
         assert resp.status_code == 200
         body = resp.json()
         assert "is_valid" in body
 
     def test_speech_transcribe(self, client):
-        resp = client.post("/api/google/speech/transcribe", json={
-            "base64Audio": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=",
-            "languageCode": "en-IN"
-        })
+        resp = client.post(
+            "/api/google/speech/transcribe",
+            json={
+                "base64Audio": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=",
+                "languageCode": "en-IN",
+            },
+        )
         assert resp.status_code == 200
         assert "transcription" in resp.json()
 
     def test_sheets_append(self, client):
-        resp = client.post("/api/google/sheets/append", json={
-            "rowData": ["John Doe", "20", "Delhi"],
-            "recaptchaToken": ""
-        })
+        resp = client.post(
+            "/api/google/sheets/append",
+            json={"rowData": ["John Doe", "20", "Delhi"], "recaptchaToken": ""},
+        )
         assert resp.status_code == 200
         assert resp.json()["success"] is True
 
     def test_storage_upload(self, client):
-        resp = client.post("/api/google/storage/upload", data={
-            "file_name": "test.txt",
-            "base64_content": "SGVsbG8gV29ybGQ=",
-            "content_type": "text/plain"
-        })
+        resp = client.post(
+            "/api/google/storage/upload",
+            data={
+                "file_name": "test.txt",
+                "base64_content": "SGVsbG8gV29ybGQ=",
+                "content_type": "text/plain",
+            },
+        )
         assert resp.status_code == 200
         assert "url" in resp.json()

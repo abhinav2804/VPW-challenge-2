@@ -41,7 +41,7 @@ class QuizDetailedResult(BaseModel):
     correct: bool
     explanation: str
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}
 
 
 class QuizGradeResponse(BaseModel):
@@ -51,4 +51,4 @@ class QuizGradeResponse(BaseModel):
     max_score: int = Field(..., alias="maxScore")
     detailed: list[QuizDetailedResult]
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}

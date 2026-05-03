@@ -11,7 +11,7 @@ class ResidenceExample(BaseModel):
     description: str
     official_basis: str = Field(..., alias="officialBasis")
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}
 
 
 class ResidenceExamplesResponse(BaseModel):
@@ -33,7 +33,7 @@ class VoterCentre(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}
 
 
 class DelhiCentresResponse(BaseModel):
@@ -42,4 +42,4 @@ class DelhiCentresResponse(BaseModel):
     query_normalized: str = Field(..., alias="queryNormalized")
     centres: list[VoterCentre]
 
-    model_config = {"populate_by_name": True, "by_alias": True}
+    model_config = {"populate_by_name": True}

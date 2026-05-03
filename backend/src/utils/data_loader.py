@@ -4,7 +4,7 @@ import json
 import os
 import logging
 from functools import lru_cache
-from typing import Any
+from typing import Union, Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ _DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 
 
 @lru_cache(maxsize=32)
-def load_json(filename: str) -> Any:
+def load_json(filename: str) -> Dict[Any, Any] | List[Any]:
     """Load and cache a JSON file from the data directory.
 
     Args:
@@ -30,4 +30,5 @@ def load_json(filename: str) -> Any:
     with open(filepath, "r", encoding="utf-8") as f:
         data = json.load(f)
     logger.info("Loaded data file: %s", filename)
-    return data
+    from typing import cast
+    return cast(Union[Dict[Any, Any], List[Any]], data)

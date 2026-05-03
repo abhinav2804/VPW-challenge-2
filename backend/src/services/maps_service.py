@@ -2,7 +2,7 @@
 
 import logging
 import math
-from typing import Optional
+from typing import Optional, Dict, Any
 
 import googlemaps
 
@@ -26,7 +26,7 @@ def _get_gmaps_client() -> googlemaps.Client:
     return _gmaps
 
 
-def geocode_locality(query: str) -> Optional[dict]:
+def geocode_locality(query: str) -> Optional[Dict[str, Any]]:
     """Geocode a locality string and return ``{formatted, lat, lng}`` or ``None``."""
     client = _get_gmaps_client()
     try:

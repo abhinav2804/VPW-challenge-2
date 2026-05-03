@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/registration", tags=["Registration"])
 @router.get("/steps", response_model=RegistrationStepsResponse)
 async def get_registration_steps(
     channel: Optional[str] = Query("portal", description="Channel: 'portal' or 'app'"),
-):
+) -> RegistrationStepsResponse:
     """Return step-by-step registration walkthrough for the chosen channel.
 
     Supported channels:
@@ -34,6 +34,9 @@ async def get_registration_steps(
         raw = load_json("registration_steps.json")
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Registration steps data not found.")
+
+    if not isinstance(raw, dict):
+        raise HTTPException(status_code=500, detail="Invalid data format for registration steps.")
 
     steps_data = raw.get(channel, [])
     steps = [RegistrationStep(**s) for s in steps_data]

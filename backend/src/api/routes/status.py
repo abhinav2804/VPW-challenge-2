@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/status", tags=["Status"])
 
 
 @router.get("/stages", response_model=StatusStagesResponse)
-async def get_status_stages():
+async def get_status_stages() -> StatusStagesResponse:
     """Return the voter registration lifecycle stages.
 
     Covers: Submitted → Under Verification → Accepted → EPIC Issued.

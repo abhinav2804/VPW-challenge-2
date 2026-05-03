@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/eligibility", tags=["Eligibility"])
 
 
 @router.post("/check", response_model=EligibilityCheckResponse)
-async def check_eligibility(payload: EligibilityCheckRequest):
+async def check_eligibility(payload: EligibilityCheckRequest) -> EligibilityCheckResponse:
     """Evaluate voter eligibility based on hard-coded ECI rules.
 
     Accepts age, citizenship, and residency details and returns a

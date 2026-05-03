@@ -1,20 +1,38 @@
 """Pydantic schemas for the AI Answer API."""
 
 from pydantic import BaseModel, Field
-from typing import Optional, Literal
+from typing import Optional, Literal, Dict, Any
 
 
-VALID_PHASES = ("intro", "general", "eligibility", "residence", "documents", "registration", "status", "quiz", "sources")
+VALID_PHASES = (
+    "intro",
+    "general",
+    "eligibility",
+    "residence",
+    "documents",
+    "registration",
+    "status",
+    "quiz",
+    "sources",
+)
 
 
 class AIAnswerRequest(BaseModel):
     """Request body for POST /api/ai/answer."""
 
     question: str = Field(..., min_length=1, max_length=2000, description="The user's question.")
-    phase: Literal["intro", "general", "eligibility", "residence", "documents", "registration", "status", "quiz", "sources"] = Field(
-        ..., description="Current phase of the voter journey."
-    )
-    context: Optional[dict] = Field(None, description="Additional context (e.g., city, state).")
+    phase: Literal[
+        "intro",
+        "general",
+        "eligibility",
+        "residence",
+        "documents",
+        "registration",
+        "status",
+        "quiz",
+        "sources",
+    ] = Field(..., description="Current phase of the voter journey.")
+    context: Optional[Dict[str, Any]] = Field(None, description="Additional context (e.g., city, state).")
 
     model_config = {"populate_by_name": True}
 

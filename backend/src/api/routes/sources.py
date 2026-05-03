@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/sources", tags=["Sources"])
 
 
 @router.get("", response_model=SourcesResponse)
-async def get_sources():
+async def get_sources() -> SourcesResponse:
     """Return a consolidated list of all official ECI materials and portals.
 
     This endpoint serves as the data source for the Help & Sources screen.
