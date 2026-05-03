@@ -25,13 +25,12 @@ const HeaderBar = () => {
             
             <button 
               onClick={() => {
-                toggleLanguage();
                 const targetLang = language === 'en' ? 'hi' : 'en';
-                const select = document.querySelector('.goog-te-combo');
-                if (select) {
-                  select.value = targetLang;
-                  select.dispatchEvent(new Event('change'));
-                }
+                toggleLanguage();
+                // Use the reliable cookie method to trigger Google Translate
+                document.cookie = `googtrans=/en/${targetLang}; path=/`;
+                document.cookie = `googtrans=/en/${targetLang}; domain=${window.location.hostname}; path=/`;
+                window.location.reload();
               }}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center gap-1 text-sm font-medium"
               aria-label="Toggle language"

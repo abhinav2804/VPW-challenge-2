@@ -12,6 +12,10 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorder = React.useRef(null);
+  const audioChunks = React.useRef([]);
+
   useEffect(() => {
     if (isOpen) {
       document.getElementById('chat-bottom')?.scrollIntoView({ behavior: 'smooth' });
@@ -20,6 +24,69 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
 
   const phaseMap = ['intro', 'eligibility', 'residence', 'documents', 'registration', 'status', 'quiz', 'sources'];
   const phaseName = phaseMap[currentPhase] || 'general';
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.current = new MediaRecorder(stream);
+      audioChunks.current = [];
+
+      mediaRecorder.current.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunks.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = async () => {
+          const base64Audio = reader.result.split(',')[1];
+          setLoading(true);
+          try {
+            // Call the backend speech-to-text API
+            const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+            const response = await fetch(`${API_BASE_URL}/google/speech/transcribe`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                base64Audio, 
+                languageCode: language === 'hi' ? 'hi-IN' : 'en-IN' 
+              }),
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              if (data.transcription) {
+                setInput(data.transcription);
+              }
+            }
+          } catch (err) {
+            console.error("Transcription failed:", err);
+            alert("Failed to transcribe audio.");
+          } finally {
+            setLoading(false);
+          }
+        };
+      };
+
+      mediaRecorder.current.start();
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Mic access denied:", err);
+      alert("Microphone access denied. Please allow microphone permissions.");
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder.current && isRecording) {
+      mediaRecorder.current.stop();
+      setIsRecording(false);
+      mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
+    }
+  };
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
@@ -117,11 +184,15 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
           <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex-shrink-0 mb-4 sm:mb-0">
             <div className="relative flex items-center gap-2">
               <button 
-                onClick={() => alert('Speech-to-Text activated! (Uses Google Cloud Speech-to-Text backend)')}
-                className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-teal-600 dark:text-teal-400 p-3 rounded-full transition-colors flex items-center justify-center flex-shrink-0 shadow-sm"
-                title="Use Voice Input"
+                onClick={isRecording ? stopRecording : startRecording}
+                className={`${isRecording ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-gray-100 text-teal-600'} hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-teal-400 p-3 rounded-full transition-colors flex items-center justify-center flex-shrink-0 shadow-sm`}
+                title={isRecording ? "Stop Recording" : "Use Voice Input"}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                {isRecording ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                )}
               </button>
               
               <div className="relative flex-1">

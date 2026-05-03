@@ -46,15 +46,15 @@ async def transcribe_audio(base64_audio: str, language_code: str = "en-IN") -> s
     if not client:
         # Fallback for local development
         logger.info("[MOCK] Transcribed audio using Speech API.")
-        return "This is a mocked audio transcription."
+        return "This is a mocked audio transcription. Error: Google Cloud credentials or client not initialized."
 
     try:
         content = base64.b64decode(base64_audio)
         
         audio = speech.RecognitionAudio(content=content)
+        # WebM contains header information, allowing auto-detection of sample rate and encoding
         config = speech.RecognitionConfig(
-            encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,  # Common browser format
-            sample_rate_hertz=48000,
+            encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
             language_code=language_code,
             alternative_language_codes=["en-IN", "hi-IN"] if language_code == "en-IN" else ["hi-IN", "en-IN"]
         )
@@ -69,5 +69,6 @@ async def transcribe_audio(base64_audio: str, language_code: str = "en-IN") -> s
         return " ".join(transcripts)
         
     except Exception as e:
-        logger.exception("Failed to transcribe audio. Falling back to mock.")
-        return "This is a mocked audio transcription (fallback)."
+        logger.error(f"Failed to transcribe audio. Error: {str(e)}")
+        logger.exception("Falling back to mock.")
+        return f"This is a mocked audio transcription (fallback). Error was: {str(e)}"
