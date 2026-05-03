@@ -10,12 +10,54 @@ import { WalkthroughHeader } from '../components/walkthrough/WalkthroughHeader';
 import { SimulatorUI } from '../components/walkthrough/SimulatorUI';
 
 const DEFAULT_STEPS = [
-  { id: 1, title: 'Create Account', desc: 'The journey starts at the ECI Voter Portal.', action: 'Enter your mobile number and OTP.', icon: 'Smartphone' },
-  { id: 2, title: 'Choose Form 6', desc: 'Select the right form for new registration.', action: 'Look for "New Voter Registration".', icon: 'FileCheck' },
-  { id: 3, title: 'Personal Details', desc: 'Enter basic info exactly as on ID.', action: 'Ensure names match your Age Proof.', icon: 'User' },
-  { id: 4, title: 'Address Details', desc: 'Provide your "Ordinary Residence".', action: 'PIN code determines your constituency.', icon: 'MapPin' },
-  { id: 5, title: 'Upload Documents', desc: 'Digital upload of photo and proofs.', action: 'Photo must be <2MB with white background.', icon: 'Camera' },
-  { id: 6, title: 'Preview & Submit', desc: 'Review your Form 6 before submission.', action: 'Wait for the Reference ID!', icon: 'Eye' }
+  { 
+    id: 1, 
+    title: 'Create Account', 
+    desc: 'The journey starts at the ECI Voter Portal or the Helpline App.', 
+    action: 'Enter your mobile number and the OTP sent to you. Keep your phone handy!',
+    videoUrl: 'https://www.youtube.com/embed/TAAc2-IXyq4',
+    icon: 'Smartphone'
+  },
+  { 
+    id: 2, 
+    title: 'Choose Form 6', 
+    desc: 'Select the right form for new voter registration.', 
+    action: 'Look for "New Voter Registration" or "Form 6". Do not confuse it with Form 8 (shifting) or Form 7 (deletion).',
+    videoUrl: 'https://www.youtube.com/embed/S2k2YwQZkY8',
+    icon: 'FileCheck'
+  },
+  { 
+    id: 3, 
+    title: 'Personal Details', 
+    desc: 'Enter your basic information exactly as it appears on your ID documents.', 
+    action: 'Ensure your First Name and Surname match your Age Proof (e.g., Aadhaar or Class 10 Certificate).',
+    videoUrl: 'https://www.youtube.com/embed/TAAc2-IXyq4?start=45',
+    icon: 'User'
+  },
+  { 
+    id: 4, 
+    title: 'Address Details', 
+    desc: 'Provide your current "Ordinary Residence" address.', 
+    action: 'The PIN code determines your Assembly Constituency. Check it twice!',
+    videoUrl: 'https://www.youtube.com/embed/TAAc2-IXyq4?start=90',
+    icon: 'MapPin'
+  },
+  { 
+    id: 5, 
+    title: 'Upload Documents', 
+    desc: 'Digital upload of your photo and proof documents.', 
+    action: 'Photo must be <2MB, facing forward, white background. Age and Address proofs must be clear scans.',
+    videoUrl: 'https://www.youtube.com/embed/S2k2YwQZkY8?start=120',
+    icon: 'Camera'
+  },
+  { 
+    id: 6, 
+    title: 'Preview & Submit', 
+    desc: 'Review your generated Form 6 before final submission.', 
+    action: 'Wait for the Reference ID! This is your only way to track your application later.',
+    videoUrl: 'https://www.youtube.com/embed/TAAc2-IXyq4?start=180',
+    icon: 'Eye'
+  }
 ];
 
 const iconMap = {
