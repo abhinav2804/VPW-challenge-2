@@ -4,14 +4,14 @@ from pydantic import BaseModel, Field
 from typing import Optional, Literal
 
 
-VALID_PHASES = ("eligibility", "residence", "documents", "registration", "status")
+VALID_PHASES = ("intro", "general", "eligibility", "residence", "documents", "registration", "status", "quiz", "sources")
 
 
 class AIAnswerRequest(BaseModel):
     """Request body for POST /api/ai/answer."""
 
     question: str = Field(..., min_length=1, max_length=2000, description="The user's question.")
-    phase: Literal["eligibility", "residence", "documents", "registration", "status"] = Field(
+    phase: Literal["intro", "general", "eligibility", "residence", "documents", "registration", "status", "quiz", "sources"] = Field(
         ..., description="Current phase of the voter journey."
     )
     context: Optional[dict] = Field(None, description="Additional context (e.g., city, state).")

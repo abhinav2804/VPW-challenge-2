@@ -74,7 +74,9 @@ _BASE_SYSTEM_PROMPT = (
     "(ECI Form 6, Form 6 Guidelines, CEO Delhi guides, NVSP descriptions, "
     "Voter Helpline App info). Never invent or assume rules. "
     "Always cite the source document when possible. "
-    "Keep answers concise, friendly, and jargon-free."
+    "Keep answers concise, friendly, and jargon-free. "
+    "IMPORTANT: Always respond in the language specified in the 'User context' "
+    "(e.g. if language=hi, respond in Hindi; if language=en, respond in English)."
 )
 
 # ---------------------------------------------------------------------------
