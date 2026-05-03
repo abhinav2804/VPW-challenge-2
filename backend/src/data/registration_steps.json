@@ -1,0 +1,152 @@
+{
+  "portal": [
+    {
+      "stepNumber": 1,
+      "title": "Create an Account on the Voter Portal",
+      "description": "Visit voters.eci.gov.in or nvsp.in and create a new account using your mobile number. You'll receive an OTP for verification.",
+      "tips": [
+        "Use a mobile number you have access to — OTP is mandatory.",
+        "Keep your Aadhaar number handy for faster signup."
+      ],
+      "commonErrors": [
+        "Using a number already linked to another account.",
+        "Not completing OTP verification within the time limit."
+      ],
+      "videoUrl": "https://www.youtube.com/watch?v=TAAc2-IXyq4"
+    },
+    {
+      "stepNumber": 2,
+      "title": "Select Form 6 – New Voter Registration",
+      "description": "After logging in, navigate to 'Forms' and choose 'Form 6 – Application for inclusion of name in the electoral roll'. This is for first-time voters.",
+      "tips": [
+        "If you've moved from another constituency, choose Form 6A instead.",
+        "Double-check you're selecting Form 6 and not Form 8."
+      ],
+      "commonErrors": [
+        "Selecting Form 8 (for corrections) instead of Form 6 (new registration)."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 3,
+      "title": "Fill in Personal Details",
+      "description": "Enter your full name, date of birth, gender, and father's/mother's/husband's name exactly as they appear on your official documents.",
+      "tips": [
+        "Spelling must match your ID proof exactly.",
+        "If your name has a middle name on Aadhaar, include it."
+      ],
+      "commonErrors": [
+        "Name mismatch between form and uploaded ID proof.",
+        "Entering nickname instead of official name."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 4,
+      "title": "Enter Residence Details",
+      "description": "Provide your current residential address. The system may auto-detect your Assembly Constituency based on PIN code. Verify it is correct.",
+      "tips": [
+        "Use the exact address as on your address proof document.",
+        "Cross-check the auto-assigned constituency with the CEO website."
+      ],
+      "commonErrors": [
+        "Entering permanent address instead of current residence.",
+        "Wrong PIN code leading to wrong constituency assignment."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 5,
+      "title": "Upload Supporting Documents",
+      "description": "Upload scanned copies or clear photographs of your age proof and address proof. Each file must be under 2 MB, in JPG/PDF format.",
+      "tips": [
+        "Use a scanner app on your phone for clear scans.",
+        "Ensure the entire document is visible and not cropped."
+      ],
+      "commonErrors": [
+        "Blurry or partially cropped document images.",
+        "Uploading files larger than the size limit."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 6,
+      "title": "Preview, Declare & Submit",
+      "description": "Review all the details you've entered. Tick the self-declaration checkbox confirming that all information is true. Then click Submit.",
+      "tips": [
+        "Take a screenshot of the confirmation page for your records.",
+        "Note down your Application Reference Number."
+      ],
+      "commonErrors": [
+        "Not ticking the declaration checkbox.",
+        "Closing the browser before the submission confirmation loads."
+      ],
+      "videoUrl": "https://www.youtube.com/watch?v=HLFfoiC0mB0"
+    }
+  ],
+  "app": [
+    {
+      "stepNumber": 1,
+      "title": "Download the Voter Helpline App",
+      "description": "Install the 'Voter Helpline' app from Google Play Store or Apple App Store. It is the official ECI app for voter services.",
+      "tips": [
+        "Search for 'Voter Helpline' – look for the ECI logo.",
+        "The app is free and works on Android 5.0+ and iOS 12+."
+      ],
+      "commonErrors": [
+        "Downloading unofficial/fake apps with similar names."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 2,
+      "title": "Register / Login in the App",
+      "description": "Open the app and register using your mobile number. Verify via OTP. If you already have an account on the Voter Portal, you can use the same credentials.",
+      "tips": [
+        "Allow SMS permissions for auto-OTP reading."
+      ],
+      "commonErrors": [
+        "Using a different number than the one registered on the portal."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 3,
+      "title": "Navigate to Form 6",
+      "description": "From the home screen, tap 'Apply Online' → 'Form 6 – New Registration'. Fill in the same details as the portal version.",
+      "tips": [
+        "The app form mirrors the portal form exactly."
+      ],
+      "commonErrors": [
+        "Accidentally selecting the wrong form type."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 4,
+      "title": "Capture & Upload Documents",
+      "description": "The app lets you directly capture photos of your documents using your phone camera. Ensure good lighting and no shadows.",
+      "tips": [
+        "Place the document on a flat surface with good light.",
+        "Use the in-app crop tool to trim edges."
+      ],
+      "commonErrors": [
+        "Blurry photos due to shaky hands.",
+        "Glare from laminated documents."
+      ],
+      "videoUrl": null
+    },
+    {
+      "stepNumber": 5,
+      "title": "Review & Submit via App",
+      "description": "Preview your application, tick the declaration, and submit. You'll receive a confirmation with your reference number in the app and via SMS.",
+      "tips": [
+        "Save the reference number — you'll need it to track status."
+      ],
+      "commonErrors": [
+        "Poor network causing submission timeout — retry on stable Wi-Fi."
+      ],
+      "videoUrl": null
+    }
+  ]
+}

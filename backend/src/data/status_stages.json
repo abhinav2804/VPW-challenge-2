@@ -1,0 +1,30 @@
+[
+  {
+    "id": "stage_submitted",
+    "label": "Application Submitted",
+    "description": "Your Form 6 has been received by the ERO. You'll get a reference number.",
+    "estimatedTimeRange": "Immediate",
+    "whereToCheck": "NVSP portal → 'Track Application Status' or Voter Helpline App"
+  },
+  {
+    "id": "stage_verification",
+    "label": "Under Verification (BLO Visit)",
+    "description": "A Booth Level Officer will visit your address to verify details. Keep original documents ready.",
+    "estimatedTimeRange": "7–30 days after submission",
+    "whereToCheck": "NVSP portal or Voter Helpline App. You may also receive SMS."
+  },
+  {
+    "id": "stage_accepted",
+    "label": "Name Added to Electoral Roll",
+    "description": "Once verification is successful, the ERO approves your application and your name is added to the electoral roll.",
+    "estimatedTimeRange": "15–45 days after submission",
+    "whereToCheck": "Search at electoralsearch.eci.gov.in or via the Voter Helpline App."
+  },
+  {
+    "id": "stage_epic",
+    "label": "EPIC / e-EPIC Issued",
+    "description": "Your Voter ID Card is generated. Download the e-EPIC digitally or collect the physical card from your ERO office.",
+    "estimatedTimeRange": "1–2 weeks after acceptance",
+    "whereToCheck": "Download e-EPIC from voterportal.eci.gov.in or Voter Helpline App."
+  }
+]

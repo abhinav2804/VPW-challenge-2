@@ -1,0 +1,72 @@
+[
+  {
+    "id": "src_form6_national",
+    "title": "Form 6 – Application for Inclusion in Electoral Roll (National)",
+    "type": "form",
+    "url": "https://voters.eci.gov.in/formspdf/Form_6_English.pdf",
+    "description": "The official ECI form used by first-time voters to apply for inclusion in the electoral roll."
+  },
+  {
+    "id": "src_form6_guidelines",
+    "title": "Guidelines for Form 6 – ECI",
+    "type": "guideline",
+    "url": "https://voters.eci.gov.in/guidelines/Form-6_en.pdf",
+    "description": "Official ECI guidelines explaining eligibility, residence rules, accepted documents, and filling instructions for Form 6."
+  },
+  {
+    "id": "src_delhi_form6",
+    "title": "Delhi Form 6 – CEO Delhi",
+    "type": "form",
+    "url": "https://www.ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/FORM6.pdf",
+    "description": "Delhi-specific version of Form 6, confirming any state-level variations."
+  },
+  {
+    "id": "src_delhi_guide",
+    "title": "Delhi Form 6 Guide – CEO Delhi",
+    "type": "guideline",
+    "url": "https://ceodelhi.gov.in/WriteReadData/userfiles/file/Forms/form%206_Guide.pdf",
+    "description": "Local filling tips, common mistakes, and Delhi-specific instructions for Form 6."
+  },
+  {
+    "id": "src_nvsp",
+    "title": "National Voter Service Portal (NVSP)",
+    "type": "portal",
+    "url": "https://www.nvsp.in/",
+    "description": "Official ECI portal for online voter registration, Form 6 submission, application tracking, and electoral roll search."
+  },
+  {
+    "id": "src_voter_portal",
+    "title": "Voter Portal – ECI",
+    "type": "portal",
+    "url": "https://voterportal.eci.gov.in/",
+    "description": "ECI's unified portal for voter services including e-EPIC download, application status, and electoral search."
+  },
+  {
+    "id": "src_voter_helpline",
+    "title": "Voter Helpline App",
+    "type": "app",
+    "url": "https://play.google.com/store/apps/details?id=com.eci.citizen",
+    "description": "Official ECI mobile app for voter registration, document upload, application tracking, and e-EPIC download."
+  },
+  {
+    "id": "src_eci_main",
+    "title": "Election Commission of India – Official Website",
+    "type": "portal",
+    "url": "https://eci.gov.in/",
+    "description": "The main ECI website with information on elections, voter registration, SVEEP initiatives, and official announcements."
+  },
+  {
+    "id": "src_electoral_search",
+    "title": "Electoral Search – ECI",
+    "type": "portal",
+    "url": "https://electoralsearch.eci.gov.in/",
+    "description": "Search tool to check if your name is on the electoral roll and find your polling station."
+  },
+  {
+    "id": "src_ceo_delhi",
+    "title": "Chief Electoral Officer – Delhi",
+    "type": "portal",
+    "url": "https://ceodelhi.gov.in/",
+    "description": "Delhi state election authority website with AC lists, AERO contacts, and local voter resources."
+  }
+]

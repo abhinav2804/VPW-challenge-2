@@ -1,0 +1,132 @@
+[
+  {
+    "id": "q1",
+    "topic": "residence",
+    "question": "What does 'ordinary residence' mean for voter registration?",
+    "options": [
+      {"id": "a", "text": "The place where your ancestors lived"},
+      {"id": "b", "text": "The place where you actually live most of the time"},
+      {"id": "c", "text": "Only your parents' address"},
+      {"id": "d", "text": "Your office address"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "As per ECI guidelines, 'ordinary residence' is the place where you actually reside most of the time, not necessarily your native or ancestral place."
+  },
+  {
+    "id": "q2",
+    "topic": "residence",
+    "question": "Can a college student staying in a hostel register to vote from the hostel address?",
+    "options": [
+      {"id": "a", "text": "No, only from parents' address"},
+      {"id": "b", "text": "Yes, if the hostel is their ordinary residence"},
+      {"id": "c", "text": "Only if the hostel is government-run"},
+      {"id": "d", "text": "Only after graduation"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "ECI guidelines allow students to enroll either at their parents' address or at the place where they ordinarily reside, such as a hostel."
+  },
+  {
+    "id": "q3",
+    "topic": "documents",
+    "question": "Which of these is NOT a valid age proof for Form 6?",
+    "options": [
+      {"id": "a", "text": "Birth Certificate"},
+      {"id": "b", "text": "Class 10 Marksheet"},
+      {"id": "c", "text": "Electricity Bill"},
+      {"id": "d", "text": "PAN Card"}
+    ],
+    "correctAnswer": "c",
+    "explanation": "An electricity bill is an address proof, not an age proof. Valid age proofs include Birth Certificate, Class 10 Marksheet, Aadhaar, PAN, Passport, and Driving Licence."
+  },
+  {
+    "id": "q4",
+    "topic": "documents",
+    "question": "Is Aadhaar card mandatory for voter registration?",
+    "options": [
+      {"id": "a", "text": "Yes, it is the only accepted ID"},
+      {"id": "b", "text": "No, but it can be used as both age and address proof"},
+      {"id": "c", "text": "Aadhaar is not accepted at all"},
+      {"id": "d", "text": "Only the Aadhaar number is needed, not the card"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "Aadhaar is NOT mandatory for voter registration. However, it is widely accepted as both age proof and address proof. Other documents like Passport, PAN, or Birth Certificate are also valid."
+  },
+  {
+    "id": "q5",
+    "topic": "forms",
+    "question": "Which form is used for first-time voter registration in India?",
+    "options": [
+      {"id": "a", "text": "Form 6"},
+      {"id": "b", "text": "Form 6A"},
+      {"id": "c", "text": "Form 7"},
+      {"id": "d", "text": "Form 8"}
+    ],
+    "correctAnswer": "a",
+    "explanation": "Form 6 is for new voter registration. Form 6A is for shifting residence, Form 7 is for objecting to an entry, and Form 8 is for corrections."
+  },
+  {
+    "id": "q6",
+    "topic": "forms",
+    "question": "What is Form 6A used for?",
+    "options": [
+      {"id": "a", "text": "New voter registration"},
+      {"id": "b", "text": "Transfer of registration when you move to a new constituency"},
+      {"id": "c", "text": "Correcting your name on the voter list"},
+      {"id": "d", "text": "Requesting a duplicate EPIC card"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "Form 6A is used for transferring your voter registration from one constituency to another when you shift your residence."
+  },
+  {
+    "id": "q7",
+    "topic": "residence",
+    "question": "If you recently moved to Delhi from Mumbai, where should you register?",
+    "options": [
+      {"id": "a", "text": "Mumbai, since that's your home state"},
+      {"id": "b", "text": "Delhi, since it's now your ordinary residence"},
+      {"id": "c", "text": "Both places"},
+      {"id": "d", "text": "Neither — wait 1 year before registering"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "You should register in your new constituency (Delhi) as it is now your ordinary place of residence. There is no mandatory waiting period."
+  },
+  {
+    "id": "q8",
+    "topic": "documents",
+    "question": "What is the maximum file size for document uploads on the NVSP portal?",
+    "options": [
+      {"id": "a", "text": "500 KB"},
+      {"id": "b", "text": "2 MB"},
+      {"id": "c", "text": "5 MB"},
+      {"id": "d", "text": "10 MB"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "The NVSP portal typically accepts document uploads up to 2 MB in JPG or PDF format."
+  },
+  {
+    "id": "q9",
+    "topic": "forms",
+    "question": "What happens after you submit Form 6 online?",
+    "options": [
+      {"id": "a", "text": "You immediately get your Voter ID"},
+      {"id": "b", "text": "A BLO visits your address for verification"},
+      {"id": "c", "text": "Nothing — you need to visit the ERO office in person"},
+      {"id": "d", "text": "You need to pay a processing fee"}
+    ],
+    "correctAnswer": "b",
+    "explanation": "After online submission, a Booth Level Officer (BLO) visits your address to verify the details. Voter registration is free of charge."
+  },
+  {
+    "id": "q10",
+    "topic": "forms",
+    "question": "What is an e-EPIC?",
+    "options": [
+      {"id": "a", "text": "An electronic version of the Voter ID card"},
+      {"id": "b", "text": "An email confirmation of registration"},
+      {"id": "c", "text": "A digital form submission receipt"},
+      {"id": "d", "text": "An online voting system"}
+    ],
+    "correctAnswer": "a",
+    "explanation": "e-EPIC is the digital/electronic version of the Electors Photo Identity Card (EPIC), which can be downloaded from the Voter Portal or the Voter Helpline App."
+  }
+]

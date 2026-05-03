@@ -1,0 +1,162 @@
+[
+  {
+    "id": "section_personal",
+    "title": "Personal Details",
+    "description": "Basic identity information required for Form 6.",
+    "items": [
+      {
+        "id": "full_name",
+        "label": "Full Name (as per official records)",
+        "examples": ["As printed on Aadhaar / PAN / Passport"],
+        "mandatory": true
+      },
+      {
+        "id": "dob",
+        "label": "Date of Birth",
+        "examples": ["DD/MM/YYYY format"],
+        "mandatory": true
+      },
+      {
+        "id": "gender",
+        "label": "Gender",
+        "examples": ["Male / Female / Third Gender"],
+        "mandatory": true
+      },
+      {
+        "id": "father_mother_husband",
+        "label": "Father's / Mother's / Husband's Name",
+        "examples": ["As on official ID"],
+        "mandatory": true
+      },
+      {
+        "id": "passport_photo",
+        "label": "Recent Passport-sized Photograph",
+        "examples": ["JPEG/PNG, white background, max 200 KB"],
+        "mandatory": true
+      }
+    ]
+  },
+  {
+    "id": "section_age_proof",
+    "title": "Age Proof",
+    "description": "Any one document proving you are at least 18 years old.",
+    "items": [
+      {
+        "id": "birth_certificate",
+        "label": "Birth Certificate",
+        "examples": ["Issued by Municipal Corporation / Gram Panchayat"],
+        "mandatory": false
+      },
+      {
+        "id": "class10_marksheet",
+        "label": "Class 10 Marksheet / Certificate",
+        "examples": ["CBSE / ICSE / State Board certificate showing DOB"],
+        "mandatory": false
+      },
+      {
+        "id": "aadhaar_age",
+        "label": "Aadhaar Card",
+        "examples": ["12-digit Aadhaar with DOB printed"],
+        "mandatory": false
+      },
+      {
+        "id": "pan_card",
+        "label": "PAN Card",
+        "examples": ["Permanent Account Number card with DOB"],
+        "mandatory": false
+      },
+      {
+        "id": "passport_age",
+        "label": "Passport",
+        "examples": ["Indian passport with DOB page"],
+        "mandatory": false
+      },
+      {
+        "id": "driving_licence",
+        "label": "Driving Licence",
+        "examples": ["Issued by RTO with DOB"],
+        "mandatory": false
+      }
+    ]
+  },
+  {
+    "id": "section_address_proof",
+    "title": "Address Proof",
+    "description": "Any one document proving your ordinary place of residence.",
+    "items": [
+      {
+        "id": "aadhaar_address",
+        "label": "Aadhaar Card",
+        "examples": ["Aadhaar showing current residential address"],
+        "mandatory": false
+      },
+      {
+        "id": "bank_passbook",
+        "label": "Bank / Post Office Passbook",
+        "examples": ["Front page with name and address"],
+        "mandatory": false
+      },
+      {
+        "id": "ration_card",
+        "label": "Ration Card",
+        "examples": ["State-issued ration card with address"],
+        "mandatory": false
+      },
+      {
+        "id": "passport_address",
+        "label": "Passport",
+        "examples": ["Address page of Indian passport"],
+        "mandatory": false
+      },
+      {
+        "id": "utility_bill",
+        "label": "Utility Bill (Water / Electricity / Gas)",
+        "examples": ["Recent bill (within 3 months) in your name or family member's name"],
+        "mandatory": false
+      },
+      {
+        "id": "rent_agreement",
+        "label": "Registered Rent Agreement",
+        "examples": ["Notarized / registered agreement with landlord"],
+        "mandatory": false
+      },
+      {
+        "id": "govt_letter",
+        "label": "Government-issued Letter / Certificate",
+        "examples": ["Income certificate, domicile certificate, etc."],
+        "mandatory": false
+      }
+    ]
+  },
+  {
+    "id": "section_declaration",
+    "title": "Declaration & Other Details",
+    "description": "Additional information and self-declaration for Form 6.",
+    "items": [
+      {
+        "id": "constituency_details",
+        "label": "Assembly Constituency / Part Number (if known)",
+        "examples": ["Can be looked up on the NVSP portal"],
+        "mandatory": false
+      },
+      {
+        "id": "mobile_number",
+        "label": "Mobile Number",
+        "examples": ["10-digit Indian mobile number for OTP verification"],
+        "mandatory": true
+      },
+      {
+        "id": "email_id",
+        "label": "Email ID",
+        "examples": ["For receiving application status updates"],
+        "mandatory": false
+      },
+      {
+        "id": "self_declaration",
+        "label": "Self-Declaration (Form 6 – Part III)",
+        "examples": ["Tick the declaration checkbox confirming all details are true"],
+        "mandatory": true
+      }
+    ]
+  }
+]

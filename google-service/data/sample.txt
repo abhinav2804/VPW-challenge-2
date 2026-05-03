@@ -1,0 +1,3 @@
+This is a sample document about project deadlines.
+The VPW Challenge 2 project deadline is strict. All submissions must be completed before the final buzzer.
+The backend must use Google GenAI SDK, and the frontend should be deployed effectively.

@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Living in a college hostel",
+    "description": "If you are a student staying in a hostel for most of the year, that hostel address qualifies as your ordinary place of residence. You can register from there.",
+    "officialBasis": "Form 6 Guidelines – ECI: Students may enroll either at their parents' address or the place where they ordinarily reside (hostel/PG)."
+  },
+  {
+    "title": "Recently moved to a new city",
+    "description": "If you've moved to a new city and plan to stay there, you should register in your new constituency. You'll need address proof for the new location.",
+    "officialBasis": "Form 6 Guidelines – ECI: A person who has shifted from one constituency to another should apply for fresh enrollment in the new constituency."
+  },
+  {
+    "title": "Staying in a rented apartment / PG",
+    "description": "A rented flat or paying-guest accommodation counts as your ordinary residence. You can use a rent agreement or a utility bill as address proof.",
+    "officialBasis": "Form 6 Guidelines – ECI: Rent agreement, utility bills, or bank passbook reflecting the address are acceptable proofs."
+  },
+  {
+    "title": "Working in a different state",
+    "description": "If you're employed in a state different from your home state and live there for most of the year, that work location is your ordinary residence.",
+    "officialBasis": "Form 6 Guidelines – ECI: 'Ordinary residence' means the place where you actually reside, not necessarily your native place."
+  },
+  {
+    "title": "Living with relatives temporarily",
+    "description": "If you're staying with relatives temporarily (e.g., during a job search), your original home may still be your ordinary residence. Register where you plan to live long-term.",
+    "officialBasis": "Form 6 Guidelines – ECI: Temporary stays do not automatically change your ordinary residence."
+  }
+]

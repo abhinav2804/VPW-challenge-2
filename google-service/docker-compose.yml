@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  filesearch:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vpw-google-service
+    env_file:
+      - ../.env
+    volumes:
+      - ./filesearch:/app/filesearch
+      # Mount a local 'data' folder for documents so they can be ingested
+      - ./data:/app/data

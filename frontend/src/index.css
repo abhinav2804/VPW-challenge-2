@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0F766E; /* Civic teal */
+  --color-primary-hover: #115E59;
+  --color-accent: #F59E0B; /* Saffron/gold for badges */
+  --color-bg-warm: #FAF9F6; /* Warm neutral background */
+  --color-bg-card: #FFFFFF;
+  --color-text-main: #1F2937;
+  --color-text-muted: #4B5563;
+}
+
+body {
+  @apply bg-[var(--color-bg-warm)] text-[var(--color-text-main)] font-sans antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight;
+}

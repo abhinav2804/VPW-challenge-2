@@ -1,0 +1,13 @@
+The National Voter Service Portal (NVSP) is the official online portal of the Election Commission of India (ECI) for all voter-related services. 
+
+Key Services Provided:
+1. Fresh Enrollment (Form 6): For citizens who have attained 18 years of age or first-time voters.
+2. Shifting of Residence (Form 6A): For voters who have moved to a different assembly constituency.
+3. Correction of Entries (Form 8): For correcting name, age, photo, or address in the electoral roll.
+4. Deletion of Entry (Form 7): For objecting to inclusion or seeking deletion of a name from the electoral roll.
+5. Track Application Status: Allows users to check the real-time status of their submitted forms using a Reference ID.
+6. Search in Electoral Roll: Allows users to verify if their name is on the voter list and find their polling station.
+7. Download e-EPIC: Digital version of the Voter ID card.
+
+Website: https://www.nvsp.in/ or https://voters.eci.gov.in/
+Support: 1950 (Voter Helpline Number)

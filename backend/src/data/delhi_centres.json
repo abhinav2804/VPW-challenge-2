@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ac01_centre_01",
+    "acNo": "1",
+    "acName": "Narela",
+    "name": "AERO Office – Narela",
+    "address": "Office of SDM (North), Narela, Delhi-110040",
+    "lat": 28.8528,
+    "lng": 77.0926,
+    "phone": "011-2720 1234",
+    "email": "aero01@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac02_centre_01",
+    "acNo": "2",
+    "acName": "Burari",
+    "name": "Voter Centre – Burari",
+    "address": "Govt. Sarvodaya Kanya Vidyalaya, Burari, Delhi-110084",
+    "lat": 28.7542,
+    "lng": 77.2210,
+    "phone": "011-2287 1234",
+    "email": "aero02@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac03_centre_01",
+    "acNo": "3",
+    "acName": "Timarpur",
+    "name": "AERO Office – Timarpur",
+    "address": "Timarpur Community Hall, Delhi-110054",
+    "lat": 28.7026,
+    "lng": 77.2121,
+    "phone": "011-2391 5678",
+    "email": "aero03@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac04_centre_01",
+    "acNo": "4",
+    "acName": "Adarsh Nagar",
+    "name": "AERO Office – Adarsh Nagar",
+    "address": "MCD Primary School, Adarsh Nagar, Delhi-110033",
+    "lat": 28.7165,
+    "lng": 77.1742,
+    "phone": "011-2713 2345",
+    "email": "aero04@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac10_centre_01",
+    "acNo": "10",
+    "acName": "Rohini",
+    "name": "AERO Office – Rohini",
+    "address": "DDA Community Centre, Sector 7, Rohini, Delhi-110085",
+    "lat": 28.7357,
+    "lng": 77.1148,
+    "phone": "011-2752 6789",
+    "email": "aero10@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac20_centre_01",
+    "acNo": "20",
+    "acName": "Karol Bagh",
+    "name": "AERO Office – Karol Bagh",
+    "address": "Municipal Building, Karol Bagh, Delhi-110005",
+    "lat": 28.6518,
+    "lng": 77.1905,
+    "phone": "011-2573 4567",
+    "email": "aero20@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac30_centre_01",
+    "acNo": "30",
+    "acName": "New Delhi",
+    "name": "AERO Office – New Delhi",
+    "address": "Office of the SDM, Barakhamba Road, New Delhi-110001",
+    "lat": 28.6304,
+    "lng": 77.2177,
+    "phone": "011-2331 8901",
+    "email": "aero30@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac40_centre_01",
+    "acNo": "40",
+    "acName": "Laxmi Nagar",
+    "name": "AERO Office – Laxmi Nagar",
+    "address": "Community Centre, Laxmi Nagar, Delhi-110092",
+    "lat": 28.6304,
+    "lng": 77.2773,
+    "phone": "011-2245 6789",
+    "email": "aero40@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac50_centre_01",
+    "acNo": "50",
+    "acName": "Okhla",
+    "name": "AERO Office – Okhla",
+    "address": "SDM Office, Okhla Phase-II, Delhi-110020",
+    "lat": 28.5300,
+    "lng": 77.2700,
+    "phone": "011-2638 1234",
+    "email": "aero50@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac60_centre_01",
+    "acNo": "60",
+    "acName": "Mehrauli",
+    "name": "AERO Office – Mehrauli",
+    "address": "DDA Community Centre, Mehrauli, Delhi-110030",
+    "lat": 28.5245,
+    "lng": 77.1855,
+    "phone": "011-2664 5678",
+    "email": "aero60@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac65_centre_01",
+    "acNo": "65",
+    "acName": "Dwarka",
+    "name": "AERO Office – Dwarka",
+    "address": "Sector 6 Community Centre, Dwarka, Delhi-110075",
+    "lat": 28.5920,
+    "lng": 77.0460,
+    "phone": "011-2508 9012",
+    "email": "aero65@ceodelhi.gov.in"
+  },
+  {
+    "id": "ac70_centre_01",
+    "acNo": "70",
+    "acName": "Najafgarh",
+    "name": "AERO Office – Najafgarh",
+    "address": "SDM Office Complex, Najafgarh, Delhi-110043",
+    "lat": 28.6094,
+    "lng": 76.9798,
+    "phone": "011-2501 3456",
+    "email": "aero70@ceodelhi.gov.in"
+  }
+]

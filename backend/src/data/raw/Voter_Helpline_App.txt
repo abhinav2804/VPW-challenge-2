@@ -1,0 +1,22 @@
+The Voter Helpline App is the official mobile application of the Election Commission of India (ECI). It is designed to provide a comprehensive range of services to Indian citizens.
+
+Key Features:
+1. Mobile Registration: Apply for new voter registration or transfer your vote directly from your smartphone.
+2. Document Upload: Use the phone camera to capture and upload age and address proof documents.
+3. Status Tracking: Receive push notifications and track the progress of your application.
+4. E-EPIC Download: Download a secure, PDF version of your Voter ID card.
+5. Polling Station Locator: Use GPS to find your nearest polling booth.
+6. Candidate Information: View details and affidavits of candidates contesting elections in your area.
+7. Results: View live election results as they are announced by the ECI.
+
+Frequently Asked Questions (FAQs):
+Q: Is the app free?
+A: Yes, it is a free service provided by the ECI.
+
+Q: Can I update my photo through the app?
+A: Yes, use Form 8 for corrections and upload a new photo.
+
+Q: Is OTP mandatory for login?
+A: Yes, for security, all services require OTP verification on your registered mobile number.
+
+Download: Available on Google Play Store and Apple App Store.
