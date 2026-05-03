@@ -20,6 +20,7 @@ from src.api.routes.registration import router as registration_router
 from src.api.routes.status import router as status_router
 from src.api.routes.quiz import router as quiz_router
 from src.api.routes.sources import router as sources_router
+from src.api.routes.google_services import router as google_services_router
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -70,6 +71,7 @@ app.include_router(registration_router)
 app.include_router(status_router)
 app.include_router(quiz_router)
 app.include_router(sources_router)
+app.include_router(google_services_router)
 
 
 # ---------------------------------------------------------------------------

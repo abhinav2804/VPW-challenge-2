@@ -1,19 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../store/useAppStore';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Download, CheckCircle, Clock, FileWarning, ArrowRight } from 'lucide-react';
+import { getStatusStages } from '../services/api';
+
+const DEFAULT_STAGES = [
+  { label: 'Submitted', desc: 'Form 6 submitted online.', icon: 'CheckCircle' },
+  { label: 'BLO Appointed', desc: 'Booth Level Officer assigned for verification.', icon: 'Clock' },
+  { label: 'Field Verified', desc: 'BLO visits residence to verify details.', icon: 'MapPin' },
+  { label: 'Accepted', desc: 'ERO accepts the application.', icon: 'CheckCircle' },
+  { label: 'EPIC Generated', desc: 'Voter ID number assigned.', icon: 'CheckCircle' }
+];
+
+const iconMap = {
+  CheckCircle: <CheckCircle size={16} />,
+  Clock: <Clock size={16} />,
+  MapPin: <MapPin size={16} />
+};
 
 const StatusNextSteps = () => {
   const { setPhase, setProgress } = useAppStore();
   const navigate = useNavigate();
   const [refNum, setRefNum] = useState('');
   const [statusStep, setStatusStep] = useState(0); // 0: None, 1: Submitted, 2: Verified, 3: Accepted, 4: EPIC Generated
+  const [timelineSteps, setTimelineSteps] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStages = async () => {
+      try {
+        const data = await getStatusStages();
+        if (data && data.stages && data.stages.length > 0) {
+          setTimelineSteps(data.stages.map(s => ({
+            ...s,
+            icon: iconMap[s.icon] || <CheckCircle size={16} />
+          })));
+        } else {
+          setTimelineSteps(DEFAULT_STAGES.map(s => ({
+            ...s,
+            icon: iconMap[s.icon] || <CheckCircle size={16} />
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch status stages, using fallback:", err);
+        setTimelineSteps(DEFAULT_STAGES.map(s => ({
+          ...s,
+          icon: iconMap[s.icon] || <CheckCircle size={16} />
+        })));
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStages();
+  }, []);
 
   const handleSimulate = (e) => {
     e.preventDefault();
     if (!refNum) return;
-    if (statusStep < 4) setStatusStep(s => s + 1);
+    if (statusStep < timelineSteps.length - 1) setStatusStep(s => s + 1);
   };
 
   const handleNextPhase = () => {
@@ -22,13 +67,14 @@ const StatusNextSteps = () => {
     navigate('/quiz');
   };
 
-  const timelineSteps = [
-    { label: 'Submitted', desc: 'Form 6 submitted online.', icon: <CheckCircle size={16} /> },
-    { label: 'BLO Appointed', desc: 'Booth Level Officer assigned for verification.', icon: <Clock size={16} /> },
-    { label: 'Field Verified', desc: 'BLO visits residence to verify details.', icon: <MapPin size={16} /> },
-    { label: 'Accepted', desc: 'ERO accepts the application.', icon: <CheckCircle size={16} /> },
-    { label: 'EPIC Generated', desc: 'Voter ID number assigned.', icon: <CheckCircle size={16} /> }
-  ];
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto mt-20 text-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent"></div>
+        <p className="mt-4 text-gray-600 dark:text-gray-300 font-medium">Connecting to ECI tracker...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-12">

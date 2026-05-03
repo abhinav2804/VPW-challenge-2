@@ -1,0 +1,19 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.flake8]
+max-line-length = 100
+exclude = ["venv", "__pycache__", ".git"]
+ignore = ["E203", "W503"]

@@ -1,42 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../store/useAppStore';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Search, ChevronRight, ChevronLeft, Phone, Navigation, ArrowRight, Lightbulb, CheckCircle2, XCircle } from 'lucide-react';
+import { getResidenceExamples, getDelhiCentres } from '../services/api';
 
-const mockAEROs = [
+const DEFAULT_SLIDES = [
+  { title: "What is Ordinary Residence?", desc: "It means the place where you normally live and sleep. You can only be registered at one place." },
+  { title: "What if you study in a hostel?", desc: "Students can choose to register either at their hostel address (with a declaration) or at their parents' house." },
+  { title: "What if you moved recently?", desc: "If you shift to a new constituency, you must register there and get your name deleted from the old place." }
+];
+
+const DEFAULT_CENTRES = [
   { id: 1, name: "AERO Office - Burari", address: "Govt Boys Senior Secondary School, Burari, Delhi", phone: "011-27612345", pin: "110084" },
   { id: 2, name: "Voter Centre - Mukharjee Nagar", address: "Community Hall, Near Batra Cinema, Delhi", phone: "011-27654321", pin: "110009" },
   { id: 3, name: "AERO Office - Saket", address: "MCD School, Block J, Saket, New Delhi", phone: "011-26512345", pin: "110017" }
 ];
 
 const ResidenceMaps = () => {
-  const { setPhase, setProgress } = useAppStore();
+  const { setPhase, setProgress, addXP } = useAppStore();
   const navigate = useNavigate();
   const [slide, setSlide] = useState(0);
+  const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(mockAEROs);
-  const [selectedLocation, setSelectedLocation] = useState(mockAEROs[0]);
+  const [searchResults, setSearchResults] = useState(DEFAULT_CENTRES);
+  const [selectedLocation, setSelectedLocation] = useState(DEFAULT_CENTRES[0]);
   const [quizAnswered, setQuizAnswered] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const slides = [
-    { title: "What is Ordinary Residence?", desc: "It means the place where you normally live and sleep. You can only be registered at one place." },
-    { title: "What if you study in a hostel?", desc: "Students can choose to register either at their hostel address (with a declaration) or at their parents' house." },
-    { title: "What if you moved recently?", desc: "If you shift to a new constituency, you must register there and get your name deleted from the old place." }
-  ];
+  useEffect(() => {
+    const fetchExamples = async () => {
+      try {
+        const data = await getResidenceExamples();
+        if (data && data.examples) {
+          setSlides(data.examples.map(ex => ({ title: ex.title, desc: ex.description })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch residence examples, using fallback:", err);
+        setSlides(DEFAULT_SLIDES);
+      }
+    };
+    fetchExamples();
+  }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchQuery) {
-      setSearchResults(mockAEROs);
-      return;
+    if (!searchQuery.trim()) return;
+    
+    setLoading(true);
+    try {
+      const data = await getDelhiCentres({ q: searchQuery });
+      if (data && data.centres && data.centres.length > 0) {
+        setSearchResults(data.centres);
+        setSelectedLocation(data.centres[0]);
+      } else {
+        // Local fallback filter
+        const filtered = DEFAULT_CENTRES.filter(l => l.pin.includes(searchQuery) || l.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        setSearchResults(filtered);
+        if (filtered.length > 0) setSelectedLocation(filtered[0]);
+      }
+    } catch (err) {
+      console.error("Search failed, using local filter:", err);
+      const filtered = DEFAULT_CENTRES.filter(l => l.pin.includes(searchQuery) || l.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      setSearchResults(filtered);
+      if (filtered.length > 0) setSelectedLocation(filtered[0]);
+    } finally {
+      setLoading(false);
     }
-    const filtered = mockAEROs.filter(l => l.pin.includes(searchQuery) || l.name.toLowerCase().includes(searchQuery.toLowerCase()));
-    setSearchResults(filtered);
-    if (filtered.length > 0) setSelectedLocation(filtered[0]);
   };
 
   const handleNextPhase = () => {
+    addXP(50, 'Residency Rules Learned');
     setPhase(4);
     setProgress(70);
     navigate('/checklist');
@@ -99,8 +133,15 @@ const ResidenceMaps = () => {
             </form>
 
             <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-              {searchResults.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-4">No sample centres found for this area.</p>
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-teal-500 border-t-transparent mb-2"></div>
+                  <p className="text-sm">Searching centres...</p>
+                </div>
+              ) : searchResults.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+                  {searchQuery ? "No sample centres found for this area." : "Search by PIN or area name above."}
+                </p>
               ) : (
                 searchResults.map(loc => (
                   <div 
@@ -168,7 +209,7 @@ const ResidenceMaps = () => {
                 <div className="space-y-2">
                   <button onClick={() => setQuizAnswered('delhi')} className="w-full text-left p-3 rounded-xl bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-700 hover:border-orange-400 transition-colors text-sm font-medium dark:text-white">Only in Delhi (Hostel)</button>
                   <button onClick={() => setQuizAnswered('jaipur')} className="w-full text-left p-3 rounded-xl bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-700 hover:border-orange-400 transition-colors text-sm font-medium dark:text-white">Only in Jaipur (Home)</button>
-                  <button onClick={() => setQuizAnswered('either')} className="w-full text-left p-3 rounded-xl bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-700 hover:border-orange-400 transition-colors text-sm font-medium dark:text-white">He can choose either Delhi or Jaipur (but not both)</button>
+                  <button onClick={() => { setQuizAnswered('either'); addXP(30, 'Scenario Mastered'); }} className="w-full text-left p-3 rounded-xl bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-700 hover:border-orange-400 transition-colors text-sm font-medium dark:text-white">He can choose either Delhi or Jaipur (but not both)</button>
                 </div>
               ) : (
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-green-200 dark:border-green-800/50">

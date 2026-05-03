@@ -1,21 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Send, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { askAI } from '../../services/api';
+import { useAppStore } from '../../store/useAppStore';
 
 const AIAssistantPanel = ({ isOpen, onClose }) => {
+  const { currentPhase, language } = useAppStore();
   const [messages, setMessages] = useState([
     { text: "Hi! I'm your AI guide for voter registration. I use official ECI rules to answer your questions. What would you like to know?", sender: "ai" }
   ]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    setMessages([...messages, { text: input, sender: "user" }]);
+  useEffect(() => {
+    if (isOpen) {
+      document.getElementById('chat-bottom')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, loading, isOpen]);
+
+  const phaseMap = ['intro', 'eligibility', 'residence', 'documents', 'registration', 'status', 'quiz', 'sources'];
+  const phaseName = phaseMap[currentPhase] || 'general';
+
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
+    
+    const userMessage = input;
+    setMessages(prev => [...prev, { text: userMessage, sender: "user" }]);
     setInput('');
-    // Mock AI response
-    setTimeout(() => {
-      setMessages(prev => [...prev, { text: "I'm still learning! (Backend integration pending). Please check the official ECI guidelines for now.", sender: "ai" }]);
-    }, 1000);
+    setLoading(true);
+
+    try {
+      const response = await askAI(userMessage, phaseName, { language });
+      
+      let aiText = response.answer;
+      if (response.sources && response.sources.length > 0) {
+        aiText += "\n\nSources:";
+        response.sources.forEach(src => {
+          aiText += `\n• ${src.title}`;
+        });
+      }
+
+      setMessages(prev => [...prev, { 
+        text: aiText, 
+        sender: "ai", 
+        sources: response.sources 
+      }]);
+    } catch (error) {
+      console.error("AI Error:", error);
+      setMessages(prev => [...prev, { 
+        text: "I'm having trouble connecting to my brain. Please try again in a moment.", 
+        sender: "ai" 
+      }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -54,7 +92,7 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50 dark:bg-gray-900/50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`p-3 rounded-2xl shadow-sm max-w-[85%] text-sm ${
+                <div className={`p-3 rounded-2xl shadow-sm max-w-[85%] text-sm whitespace-pre-wrap ${
                   msg.sender === 'user' 
                     ? 'bg-teal-600 text-white rounded-tr-none' 
                     : 'bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none'
@@ -63,6 +101,16 @@ const AIAssistantPanel = ({ isOpen, onClose }) => {
                 </div>
               </div>
             ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-3 rounded-2xl rounded-tl-none shadow-sm flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                </div>
+              </div>
+            )}
+            <div id="chat-bottom"></div>
           </div>
 
           {/* Input Area */}

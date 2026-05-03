@@ -12,5 +12,5 @@ COPY . .
 # Expose port
 EXPOSE 8000
 
-# Run with uvicorn
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run with uvicorn, respecting PORT env var for Cloud Run
+CMD uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}

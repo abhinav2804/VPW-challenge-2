@@ -3,6 +3,8 @@ import HeaderBar from './HeaderBar';
 import ProgressTracker from '../ui/ProgressTracker';
 import FloatingAIAssistantButton from '../ai/FloatingAIAssistantButton';
 import AIAssistantPanel from '../ai/AIAssistantPanel';
+import LevelUpModal from '../ui/LevelUpModal';
+import AchievementToaster from '../ui/AchievementToaster';
 import { useAppStore } from '../../store/useAppStore';
 
 const AppShell = ({ children }) => {
@@ -24,6 +26,8 @@ const AppShell = ({ children }) => {
       </main>
 
       <FloatingAIAssistantButton onClick={() => setAIPanelOpen(!isAIPanelOpen)} isOpen={isAIPanelOpen} />
+      <LevelUpModal />
+      <AchievementToaster />
     </div>
   );
 };

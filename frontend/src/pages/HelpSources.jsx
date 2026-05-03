@@ -1,7 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, ExternalLink, PhoneCall, ShieldAlert, Heart } from 'lucide-react';
+import { getSources } from '../services/api';
+
+const DEFAULT_SOURCES = [
+  { 
+    title: "Guidelines for Form 6", 
+    url: "https://voters.eci.gov.in/guidelines/Form-6_en.pdf",
+    description: "Official ECI PDF containing all rules."
+  },
+  { 
+    title: "Voters Service Portal", 
+    url: "https://voters.eci.gov.in/",
+    description: "The official site to submit your application."
+  },
+  { 
+    title: "CEO Delhi Website", 
+    url: "https://ceodelhi.gov.in/",
+    description: "State specific guidelines and AERO lists."
+  }
+];
 
 const HelpSources = () => {
+  const [sources, setSources] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSources = async () => {
+      try {
+        const data = await getSources();
+        if (data && data.sources && data.sources.length > 0) {
+          setSources(data.sources);
+        } else {
+          setSources(DEFAULT_SOURCES);
+        }
+      } catch (err) {
+        console.error("Failed to fetch sources, using fallback:", err);
+        setSources(DEFAULT_SOURCES);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSources();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto mt-20 text-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent"></div>
+        <p className="mt-4 text-gray-600 dark:text-gray-300">Loading official references...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="text-center mb-12">
@@ -16,26 +66,14 @@ const HelpSources = () => {
             <FileText className="text-teal-600" /> Reference Documents
           </h2>
           <div className="space-y-4">
-            <a href="https://voters.eci.gov.in/guidelines/Form-6_en.pdf" target="_blank" rel="noreferrer" className="block p-4 bg-gray-50 dark:bg-gray-900 rounded-xl hover:bg-teal-50 dark:hover:bg-teal-900/20 border border-gray-200 dark:border-gray-700 transition-colors group">
-              <h3 className="font-bold text-gray-900 dark:text-white flex justify-between items-center">
-                Guidelines for Form 6 <ExternalLink size={16} className="text-gray-400 group-hover:text-teal-600" />
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">Official ECI PDF containing all rules.</p>
-            </a>
-            
-            <a href="https://voters.eci.gov.in/" target="_blank" rel="noreferrer" className="block p-4 bg-gray-50 dark:bg-gray-900 rounded-xl hover:bg-teal-50 dark:hover:bg-teal-900/20 border border-gray-200 dark:border-gray-700 transition-colors group">
-              <h3 className="font-bold text-gray-900 dark:text-white flex justify-between items-center">
-                Voters Service Portal <ExternalLink size={16} className="text-gray-400 group-hover:text-teal-600" />
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">The official site to submit your application.</p>
-            </a>
-
-            <a href="https://ceodelhi.gov.in/" target="_blank" rel="noreferrer" className="block p-4 bg-gray-50 dark:bg-gray-900 rounded-xl hover:bg-teal-50 dark:hover:bg-teal-900/20 border border-gray-200 dark:border-gray-700 transition-colors group">
-              <h3 className="font-bold text-gray-900 dark:text-white flex justify-between items-center">
-                CEO Delhi Website <ExternalLink size={16} className="text-gray-400 group-hover:text-teal-600" />
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">State specific guidelines and AERO lists.</p>
-            </a>
+            {sources.map((source, idx) => (
+              <a key={idx} href={source.url} target="_blank" rel="noreferrer" className="block p-4 bg-gray-50 dark:bg-gray-900 rounded-xl hover:bg-teal-50 dark:hover:bg-teal-900/20 border border-gray-200 dark:border-gray-700 transition-colors group">
+                <h3 className="font-bold text-gray-900 dark:text-white flex justify-between items-center text-sm">
+                  {source.title} <ExternalLink size={16} className="text-gray-400 group-hover:text-teal-600" />
+                </h3>
+                <p className="text-[11px] text-gray-500 mt-1">{source.description}</p>
+              </a>
+            ))}
           </div>
         </div>
 

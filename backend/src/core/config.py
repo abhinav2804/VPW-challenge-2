@@ -26,6 +26,18 @@ class Settings(BaseSettings):
     # Optional: path to a service-account JSON for Google APIs
     GOOGLE_APPLICATION_CREDENTIALS: str = ""
 
+    # Google Cloud Storage
+    GCS_BUCKET_NAME: str = "vpw-voter-documents"
+
+    # Google Sheets API
+    GOOGLE_SHEETS_ID: str = ""
+
+    # Google Cloud Project ID (needed for reCAPTCHA and Speech)
+    GCP_PROJECT_ID: str = "eternal-calling-478712-j6"
+
+    # Google reCAPTCHA Enterprise Site Key
+    RECAPTCHA_SITE_KEY: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

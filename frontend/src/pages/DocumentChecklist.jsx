@@ -1,34 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../store/useAppStore';
 import { useNavigate } from 'react-router-dom';
 import { Check, CheckCircle2, ChevronDown, ChevronUp, FileText, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { getDocumentChecklist } from '../services/api';
+
+const DEFAULT_CHECKLIST = [
+  {
+    id: 'photo',
+    title: 'Passport Size Photograph',
+    subtitle: 'Recent colored photograph with light background.',
+    options: ['Must show full face directly facing the camera', 'No dark glasses or tinted lenses', 'White/Off-white background preferred']
+  },
+  {
+    id: 'ageProof',
+    title: 'Proof of Age',
+    subtitle: 'Required primarily if you are between 18-21 years of age.',
+    options: ['Birth Certificate issued by Municipal Authority', 'Class X / XII Certificate containing birth date', 'Indian Passport', 'PAN Card', 'Driving License', 'Aadhaar Card']
+  },
+  {
+    id: 'addressProof',
+    title: 'Proof of Ordinary Residence',
+    subtitle: 'Must be in the name of the applicant or their parents.',
+    options: ['Water/Electricity/Gas Bill (recent 1 year)', 'Aadhaar Card', 'Current Passbook of Nationalized Bank/Post Office', 'Indian Passport', 'Registered Rent Agreement']
+  },
+  {
+    id: 'relativeDetails',
+    title: 'Relative Details',
+    subtitle: 'EPIC number of a family member already enrolled.',
+    options: ["Father, Mother, Husband, or Guardian's voter ID number", "Helps in keeping the family's polling station same"]
+  }
+];
+
+const DEFAULT_FAQS = [
+  { q: "Is Aadhaar strictly mandatory?", a: "No. You can provide your Aadhaar number voluntarily. If you don't have it, you can select 'I am not able to furnish my Aadhaar Number' on the form and use other documents." },
+  { q: "Can I use an un-registered rent agreement?", a: "Generally, ECI prefers a Registered Rent Agreement. If unregistered, BLO verification at the residence might be strictly conducted." },
+  { q: "What if my age proof doesn't match my address proof?", a: "That is completely fine. Age proof verifies your date of birth, while address proof verifies where you live. They serve two different purposes." }
+];
 
 const DocumentChecklist = () => {
-  const { setPhase, setProgress } = useAppStore();
+  const { setPhase, setProgress, setAIPanelOpen, addXP } = useAppStore();
   const navigate = useNavigate();
   
-  const [checkedItems, setCheckedItems] = useState({
-    photo: false,
-    ageProof: false,
-    addressProof: false,
-    relativeDetails: false
-  });
-
+  const [checkedItems, setCheckedItems] = useState({});
+  const [checklistSections, setChecklistSections] = useState([]);
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [expandedFaq, setExpandedFaq] = useState(null);
+
+  useEffect(() => {
+    const fetchChecklist = async () => {
+      try {
+        const data = await getDocumentChecklist();
+        if (data && data.categories) {
+          const sections = data.categories.map(cat => ({
+            id: cat.id,
+            title: cat.title,
+            subtitle: "Required for registration",
+            options: cat.items.map(item => `${item.text}: ${item.description}`)
+          }));
+          setChecklistSections(sections);
+          
+          const initialChecked = {};
+          sections.forEach(s => initialChecked[s.id] = false);
+          setCheckedItems(initialChecked);
+          
+          if (data.faqs) setFaqs(data.faqs);
+          else setFaqs(DEFAULT_FAQS);
+        } else {
+          setChecklistSections(DEFAULT_CHECKLIST);
+          setFaqs(DEFAULT_FAQS);
+          const initialChecked = {};
+          DEFAULT_CHECKLIST.forEach(s => initialChecked[s.id] = false);
+          setCheckedItems(initialChecked);
+        }
+      } catch (err) {
+        console.error("Failed to fetch checklist, using fallback:", err);
+        setChecklistSections(DEFAULT_CHECKLIST);
+        setFaqs(DEFAULT_FAQS);
+        const initialChecked = {};
+        DEFAULT_CHECKLIST.forEach(s => initialChecked[s.id] = false);
+        setCheckedItems(initialChecked);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChecklist();
+  }, []);
 
   const totalItems = Object.keys(checkedItems).length;
   const completedItems = Object.values(checkedItems).filter(Boolean).length;
-  const progressPercent = Math.round((completedItems / totalItems) * 100);
+  const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   const toggleItem = (key) => {
     setCheckedItems(prev => {
       const newState = { ...prev, [key]: !prev[key] };
       const newCompleted = Object.values(newState).filter(Boolean).length;
       
+      if (!prev[key]) {
+        addXP(20, 'Document Prepared');
+      }
+
       if (newCompleted === totalItems && !prev[key]) {
         triggerConfetti();
+        addXP(100, 'Backpack Ready!');
       }
       return newState;
     });
@@ -49,38 +125,14 @@ const DocumentChecklist = () => {
     navigate('/walkthrough');
   };
 
-  const checklistSections = [
-    {
-      id: 'photo',
-      title: 'Passport Size Photograph',
-      subtitle: 'Recent colored photograph with light background.',
-      options: ['Must show full face directly facing the camera', 'No dark glasses or tinted lenses', 'White/Off-white background preferred']
-    },
-    {
-      id: 'ageProof',
-      title: 'Proof of Age',
-      subtitle: 'Required primarily if you are between 18-21 years of age.',
-      options: ['Birth Certificate issued by Municipal Authority', 'Class X / XII Certificate containing birth date', 'Indian Passport', 'PAN Card', 'Driving License', 'Aadhaar Card']
-    },
-    {
-      id: 'addressProof',
-      title: 'Proof of Ordinary Residence',
-      subtitle: 'Must be in the name of the applicant or their parents.',
-      options: ['Water/Electricity/Gas Bill (recent 1 year)', 'Aadhaar Card', 'Current Passbook of Nationalized Bank/Post Office', 'Indian Passport', 'Registered Rent Agreement']
-    },
-    {
-      id: 'relativeDetails',
-      title: 'Relative Details',
-      subtitle: 'EPIC number of a family member already enrolled.',
-      options: ["Father, Mother, Husband, or Guardian's voter ID number", "Helps in keeping the family's polling station same"]
-    }
-  ];
-
-  const faqs = [
-    { q: "Is Aadhaar strictly mandatory?", a: "No. You can provide your Aadhaar number voluntarily. If you don't have it, you can select 'I am not able to furnish my Aadhaar Number' on the form and use other documents." },
-    { q: "Can I use an un-registered rent agreement?", a: "Generally, ECI prefers a Registered Rent Agreement. If unregistered, BLO verification at the residence might be strictly conducted." },
-    { q: "What if my age proof doesn't match my address proof?", a: "That is completely fine. Age proof verifies your date of birth, while address proof verifies where you live. They serve two different purposes." }
-  ];
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto mt-20 text-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent"></div>
+        <p className="mt-4 text-gray-600 dark:text-gray-300 font-medium">Gathering official requirements...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-12">
@@ -188,7 +240,10 @@ const DocumentChecklist = () => {
               ))}
             </div>
             
-            <button className="w-full mt-6 text-sm font-bold text-orange-700 dark:text-orange-400 border-2 border-orange-200 dark:border-orange-800 hover:bg-orange-100 dark:hover:bg-orange-800/50 py-3 rounded-xl transition-colors">
+            <button 
+              onClick={() => setAIPanelOpen(true)}
+              className="w-full mt-6 text-sm font-bold text-orange-700 dark:text-orange-400 border-2 border-orange-200 dark:border-orange-800 hover:bg-orange-100 dark:hover:bg-orange-800/50 py-3 rounded-xl transition-colors"
+            >
               Ask AI about Documents
             </button>
           </div>
